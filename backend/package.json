@@ -21,8 +21,8 @@
     "express-rate-limit": "^7.1.5",
     "mongoose": "^8.0.0",
     "redis": "^4.6.11",
-    "nodemailer": "^6.9.7",
-    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^8.0.5",
+    "multer": "^2.1.1",
     "uuid": "^9.0.1",
     "moment": "^2.29.4"
   },

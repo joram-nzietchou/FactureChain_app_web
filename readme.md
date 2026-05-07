@@ -1,14 +1,4 @@
-Voici le code complet du `README.md` pour votre dépôt GitHub :
-
-```markdown
 # ⚡ FactureChain - Vérification des factures ENEO sur Blockchain
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-20-green)](https://nodejs.org/)
-[![Solidity](https://img.shields.io/badge/Solidity-0.8.20-black)](https://soliditylang.org/)
-[![Polygon](https://img.shields.io/badge/Polygon-AMOY-purple)](https://polygon.technology/)
-
 ## 📋 À propos
 
 **FactureChain** est une application complète permettant aux abonnés ENEO du Cameroun de :
@@ -28,39 +18,6 @@ Au Cameroun, les abonnés ENEO subissent :
 - ❌ Délais de résolution de 6 à 18 mois
 
 **FactureChain** apporte une solution transparente et décentralisée grâce à la blockchain.
-
-## 🏗️ Architecture du projet
-
-```
-FactureChain_app_web/
-│
-├── frontend/                    # Application React (Vite)
-│   ├── src/
-│   │   ├── pages/              # Pages de l'application
-│   │   ├── services/           # Services API
-│   │   ├── contexts/           # Contextes React
-│   │   └── App.jsx
-│   └── package.json
-│
-├── backend/                     # API Node.js/Express
-│   ├── src/
-│   │   ├── models/             # Modèles MongoDB
-│   │   ├── controllers/        # Contrôleurs
-│   │   ├── routes/             # Routes API
-│   │   ├── services/           # Services (blockchain, email)
-│   │   └── app.js
-│   └── package.json
-│
-├── blockchain/                  # Smart contracts (Hardhat)
-│   ├── contracts/
-│   │   └── Reclamation.sol     # Contrat Solidity
-│   ├── scripts/
-│   │   └── deploy.js           # Script de déploiement
-│   └── hardhat.config.cjs
-│
-├── .gitignore
-└── README.md
-```
 
 ## 🚀 Technologies utilisées
 
@@ -84,7 +41,6 @@ FactureChain_app_web/
 ```bash
 git clone https://github.com/joram-nzietchou/FactureChain_app_web.git
 cd FactureChain_app_web
-```
 
 ### 2. Installer les dépendances
 

@@ -1,8 +1,11 @@
-// Tarifs ENEO Cameroun (tarif résidentiel)
+// backend/src/services/billingService.js
+
+// Tarifs ENEO Cameroun (Tranches réelles)
 const TARIFFS = [
-  { min: 0, max: 110, rate: 110 },      // 110 FCFA/kWh
-  { min: 111, max: 220, rate: 115 },    // 115 FCFA/kWh
-  { min: 221, max: Infinity, rate: 120 } // 120 FCFA/kWh
+  { min: 0, max: 110, rate: 50 },      // 50 FCFA/kWh
+  { min: 111, max: 220, rate: 79 },    // 79 FCFA/kWh
+  { min: 221, max: 400, rate: 94 },    // 94 FCFA/kWh
+  { min: 401, max: Infinity, rate: 99 } // 99 FCFA/kWh
 ];
 
 const TVA_RATE = 0.1925; // 19.25%
@@ -22,25 +25,32 @@ class BillingService {
   calculatePrice(consumption) {
     let total = 0;
     let remaining = consumption;
-    let appliedRate = TARIFFS[0].rate;
-
+    let details = [];
+    
     for (const tier of TARIFFS) {
       if (remaining <= 0) break;
       
-      const tierMax = tier.max;
+      const tierMax = tier.max === Infinity ? remaining : tier.max;
       const tierMin = tier.min;
-      const tierRange = tierMax - tierMin + 1;
-      const consumptionInTier = Math.min(remaining, tierRange);
+      const tierRange = Math.min(remaining, tierMax - tierMin + 1);
       
-      total += consumptionInTier * tier.rate;
-      remaining -= consumptionInTier;
-      appliedRate = tier.rate;
+      if (tierRange > 0) {
+        const amount = tierRange * tier.rate;
+        total += amount;
+        details.push({
+          range: `${tier.min} - ${tier.max === Infinity ? '+' : tier.max}`,
+          rate: tier.rate,
+          kwh: tierRange,
+          amount: amount
+        });
+        remaining -= tierRange;
+      }
     }
-
+    
     return {
       total: Math.round(total),
       averageRate: Math.round(total / consumption),
-      appliedRate: appliedRate
+      details: details
     };
   }
 
@@ -65,6 +75,7 @@ class BillingService {
       totalTTC: withTax.total,
       breakdown: {
         consommation_kWh: consumption,
+        details: price.details,
         prix_unitaire_moyen: price.averageRate,
         montant_HT: price.total,
         TVA: withTax.tax,

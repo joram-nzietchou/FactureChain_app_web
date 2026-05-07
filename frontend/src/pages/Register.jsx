@@ -148,7 +148,7 @@ const Register = ({ onNavigate }) => {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                placeholder="Jean Dupont"
+                placeholder="votre nom..."
                 required
               />
             </div>
@@ -159,7 +159,7 @@ const Register = ({ onNavigate }) => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="jean@email.com"
+                placeholder="votre email..."
                 required
               />
             </div>
@@ -169,7 +169,7 @@ const Register = ({ onNavigate }) => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                placeholder="690000000"
+                placeholder="votre numéro de téléphone..."
                 required
               />
               <small>9 chiffres (ex: 690000000)</small>

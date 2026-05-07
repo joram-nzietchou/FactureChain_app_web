@@ -3,12 +3,12 @@ const router = express.Router();
 const meterController = require('../controllers/meterController');
 const { authMiddleware } = require('../middleware/auth');
 
+// Toutes les routes nécessitent authentification
 router.use(authMiddleware);
 
-// Route UNIQUE : enregistrer un relevé
+// Routes
+router.get('/last-index', meterController.getLastIndex);
 router.post('/store', meterController.storeReading);
-
-// Route : récupérer l'historique blockchain
-router.get('/history', meterController.getBlockchainHistory);
+router.get('/history', meterController.getHistory);
 
 module.exports = router;

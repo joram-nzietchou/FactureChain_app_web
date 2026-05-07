@@ -7,6 +7,8 @@ router.use(authMiddleware);
 
 router.get('/', dashboardController.getDashboardData);
 router.get('/history', dashboardController.getConsumptionHistory);
+router.get('/bills', dashboardController.getBillHistory);
+router.get('/bills/stats', dashboardController.getBillStats);
 router.post('/verify-bill', dashboardController.verifyBill);
 
 module.exports = router;

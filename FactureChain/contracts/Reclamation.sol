@@ -12,9 +12,20 @@ contract ReclamationSystem {
         uint256 timestamp;
     }
 
+    // Mapping des relevés
     mapping(uint256 => MeterReading) public meterReadings;
     mapping(string => uint256[]) public subscriberReadings;
     
+    // Contre-réclamations
+    struct Reclamation {
+        uint256 id;
+        address abonne;
+        string cidPreuve;
+        uint256 montant;
+        string statut;
+    }
+    mapping(uint256 => Reclamation) public reclamations;
+    uint256 public prochainId;
     uint256 public nextReadingId;
 
     event ReadingStored(
@@ -25,8 +36,10 @@ contract ReclamationSystem {
         uint256 currentIndex,
         uint256 timestamp
     );
+    event NouvelleReclamation(uint256 id, address abonne);
 
-    // Fonction simplifiée : enregistre uniquement l'index
+    // ============ FONCTIONS RELEVÉS ============
+    
     function storeReading(
         string memory _subscriberNumber,
         uint256 _previousIndex,
@@ -48,11 +61,10 @@ contract ReclamationSystem {
         subscriberReadings[_subscriberNumber].push(id);
         
         emit ReadingStored(id, msg.sender, _subscriberNumber, _previousIndex, _currentIndex, block.timestamp);
-        
         nextReadingId++;
     }
 
-    // Récupérer tous les IDs d'un abonné
+    // ⚠️ FONCTION CORRIGÉE - getSubscriberReadingIds
     function getSubscriberReadingIds(string memory _subscriberNumber) 
         public 
         view 
@@ -61,7 +73,6 @@ contract ReclamationSystem {
         return subscriberReadings[_subscriberNumber];
     }
 
-    // Récupérer un relevé par ID
     function getReading(uint256 _id) 
         public 
         view 
@@ -83,5 +94,24 @@ contract ReclamationSystem {
             reading.currentIndex,
             reading.timestamp
         );
+    }
+
+    // ============ FONCTIONS RÉCLAMATIONS ============
+    
+    function creerReclamation(string memory _cid, uint256 _montant) public {
+        reclamations[prochainId] = Reclamation(prochainId, msg.sender, _cid, _montant, "Soumis");
+        emit NouvelleReclamation(prochainId, msg.sender);
+        prochainId++;
+    }
+
+    function getReclamation(uint256 _id) public view returns (
+        uint256 id,
+        address abonne,
+        string memory cidPreuve,
+        uint256 montant,
+        string memory statut
+    ) {
+        Reclamation memory r = reclamations[_id];
+        return (r.id, r.abonne, r.cidPreuve, r.montant, r.statut);
     }
 }

@@ -10,6 +10,25 @@
           "type": "uint256"
         },
         {
+          "indexed": false,
+          "internalType": "address",
+          "name": "abonne",
+          "type": "address"
+        }
+      ],
+      "name": "NouvelleReclamation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
           "indexed": true,
           "internalType": "address",
           "name": "owner",
@@ -42,6 +61,24 @@
       ],
       "name": "ReadingStored",
       "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_cid",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_montant",
+          "type": "uint256"
+        }
+      ],
+      "name": "creerReclamation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -82,6 +119,45 @@
           "internalType": "uint256",
           "name": "timestamp",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getReclamation",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "abonne",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "cidPreuve",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "statut",
+          "type": "string"
         }
       ],
       "stateMutability": "view",
@@ -158,6 +234,58 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "prochainId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "reclamations",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "abonne",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "cidPreuve",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "statut",
+          "type": "string"
         }
       ],
       "stateMutability": "view",

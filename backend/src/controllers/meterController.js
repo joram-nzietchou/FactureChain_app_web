@@ -1,12 +1,29 @@
 const MeterReading = require('../models/MeterReading');
 const blockchainService = require('../services/blockchainService');
 
-// Enregistrement SIMPLIFIÉ - uniquement dans la blockchain
+// Obtenir le dernier index de l'utilisateur
+exports.getLastIndex = async (req, res) => {
+  try {
+    const { subscriberNumber } = req.user;
+    
+    const lastReading = await MeterReading.findOne({ subscriberNumber })
+      .sort({ readingDate: -1 });
+    
+    res.json({ 
+      success: true, 
+      lastIndex: lastReading ? lastReading.currentIndex : 0 
+    });
+  } catch (error) {
+    console.error('Erreur getLastIndex:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// Enregistrer un relevé
 exports.storeReading = async (req, res) => {
   try {
     const { subscriberNumber, previousIndex, currentIndex } = req.body;
     
-    // Validation simple
     if (!subscriberNumber) {
       return res.status(400).json({ success: false, error: 'Numéro abonné requis' });
     }
@@ -14,9 +31,20 @@ exports.storeReading = async (req, res) => {
       return res.status(400).json({ success: false, error: 'L\'index actuel doit être supérieur' });
     }
     
-    console.log(`📝 Enregistrement relevé: ${subscriberNumber} - ${previousIndex} → ${currentIndex}`);
+    // Calculer la consommation
+    const consumption = currentIndex - previousIndex;
     
-    // Enregistrer dans la blockchain
+    // Calculer le prix (tarifs ENEO)
+    let price = 0;
+    let remaining = consumption;
+    if (remaining <= 110) price = remaining * 110;
+    else if (remaining <= 220) price = (110 * 110) + (remaining - 110) * 115;
+    else price = (110 * 110) + (110 * 115) + (remaining - 220) * 120;
+    
+    const tva = price * 0.1925;
+    const totalAmount = Math.round(price + tva);
+    
+    // Enregistrer sur la blockchain
     const blockchainResult = await blockchainService.storeReading(
       subscriberNumber,
       previousIndex,
@@ -30,7 +58,7 @@ exports.storeReading = async (req, res) => {
       });
     }
     
-    // Sauvegarde locale optionnelle
+    // Sauvegarder en base de données
     const reading = await MeterReading.create({
       subscriberNumber,
       readingDate: new Date(),
@@ -38,7 +66,8 @@ exports.storeReading = async (req, res) => {
       year: new Date().getFullYear(),
       previousIndex,
       currentIndex,
-      consumption: currentIndex - previousIndex,
+      consumption,
+      calculatedAmount: totalAmount,
       blockchainHash: blockchainResult.transactionHash,
       blockchainReadingId: blockchainResult.readingId
     });
@@ -47,27 +76,31 @@ exports.storeReading = async (req, res) => {
       success: true,
       message: 'Relevé enregistré sur la blockchain',
       data: {
+        reading,
         blockchain: {
           transactionHash: blockchainResult.transactionHash,
           readingId: blockchainResult.readingId,
           blockNumber: blockchainResult.blockNumber
-        },
-        local: reading
+        }
       }
     });
     
   } catch (error) {
-    console.error('Erreur:', error);
+    console.error('Erreur storeReading:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
 
-// Récupérer l'historique blockchain
-exports.getBlockchainHistory = async (req, res) => {
+// Obtenir l'historique des relevés
+exports.getHistory = async (req, res) => {
   try {
     const { subscriberNumber } = req.user;
-    const result = await blockchainService.getReadings(subscriberNumber);
-    res.json(result);
+    
+    const readings = await MeterReading.find({ subscriberNumber })
+      .sort({ readingDate: -1 })
+      .limit(12);
+    
+    res.json({ success: true, data: readings });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

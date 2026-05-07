@@ -7,12 +7,13 @@ const Suivi = ({ onNavigate }) => {
   const { user } = useAuth();
   const [claims, setClaims] = useState([]);
   const [selectedClaim, setSelectedClaim] = useState(null);
-  const [blockchainProof, setBlockchainProof] = useState(null);
+  const [blockchainReadings, setBlockchainReadings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [verifying, setVerifying] = useState(false);
+  const [activeTab, setActiveTab] = useState('claims');
 
   useEffect(() => {
     loadClaims();
+    loadBlockchainHistory();
   }, []);
 
   const loadClaims = async () => {
@@ -22,9 +23,6 @@ const Suivi = ({ onNavigate }) => {
         setClaims(response.data.claims || []);
         if (response.data.claims?.length > 0) {
           setSelectedClaim(response.data.claims[0]);
-          if (response.data.claims[0].blockchainHash) {
-            verifyBlockchainProof(response.data.claims[0].blockchainHash);
-          }
         }
       }
     } catch (error) {
@@ -34,17 +32,14 @@ const Suivi = ({ onNavigate }) => {
     }
   };
 
-  const verifyBlockchainProof = async (txHash) => {
-    setVerifying(true);
+  const loadBlockchainHistory = async () => {
     try {
-      const response = await api.verifyBlockchainTransaction(txHash);
-      if (response.success) {
-        setBlockchainProof(response.data);
+      const response = await api.getBlockchainHistory();
+      if (response.success && response.data?.readings) {
+        setBlockchainReadings(response.data.readings);
       }
     } catch (error) {
-      console.error('Erreur vérification blockchain:', error);
-    } finally {
-      setVerifying(false);
+      console.error('Erreur chargement historique blockchain:', error);
     }
   };
 
@@ -70,8 +65,22 @@ const Suivi = ({ onNavigate }) => {
     return colors[status] || '#6b7280';
   };
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '50px' }}>Chargement...</div>;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div>Chargement de vos réclamations...</div>
+      </div>
+    );
   }
 
   return (
@@ -82,141 +91,190 @@ const Suivi = ({ onNavigate }) => {
           <h1>Mes réclamations</h1>
         </div>
 
-        {claims.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon">📋</div>
-            <h3>Aucune réclamation</h3>
-            <p>Vous n'avez pas encore déposé de réclamation.</p>
-            <button className="btn-primary" onClick={() => onNavigate('reclamation')}>
-              Déposer une réclamation
-            </button>
-          </div>
-        ) : (
+        {/* Tabs */}
+        <div className="tabs">
+          <button 
+            className={`tab ${activeTab === 'claims' ? 'active' : ''}`}
+            onClick={() => setActiveTab('claims')}
+          >
+             Réclamations ({claims.length})
+          </button>
+          <button 
+            className={`tab ${activeTab === 'blockchain' ? 'active' : ''}`}
+            onClick={() => setActiveTab('blockchain')}
+          >
+            🔗 Preuves blockchain ({blockchainReadings.length})
+          </button>
+        </div>
+
+        {activeTab === 'claims' && (
           <>
-            <div className="claims-list">
-              {claims.map(claim => (
-                <div
-                  key={claim.claimNumber}
-                  className={`claim-card ${selectedClaim?.claimNumber === claim.claimNumber ? 'active' : ''}`}
-                  onClick={() => {
-                    setSelectedClaim(claim);
-                    if (claim.blockchainHash) verifyBlockchainProof(claim.blockchainHash);
-                  }}
-                >
-                  <div className="claim-header">
-                    <span className="claim-number">{claim.claimNumber}</span>
-                    <span className="claim-status" style={{ background: getStatusColor(claim.status) }}>
-                      {getStatusLabel(claim.status)}
-                    </span>
-                  </div>
-                  <div className="claim-date">{new Date(claim.createdAt).toLocaleDateString('fr-FR')}</div>
-                  <div className="claim-amount">Différence: {claim.difference?.toLocaleString()} FCFA</div>
-                  {claim.blockchainHash && (
-                    <div className="blockchain-badge">
-                      🔗 Preuve blockchain
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {selectedClaim && (
-              <div className="claim-detail">
-                <div className="detail-header">
-                  <h2>Réclamation {selectedClaim.claimNumber}</h2>
-                  {selectedClaim.blockchainHash && (
-                    <div className="blockchain-section">
-                      <p className="detail-hash">
-                        🔗 Hash blockchain: {selectedClaim.blockchainHash.substring(0, 20)}...
-                      </p>
-                      {blockchainProof?.verified && (
-                        <div className="proof-verified">
-                          ✅ Transaction vérifiée (Bloc {blockchainProof.blockNumber})
-                        </div>
-                      )}
-                      <a 
-                        href={`https://amoy.polygonscan.com/tx/${selectedClaim.blockchainHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="polygonscan-link"
-                      >
-                        Voir sur Polygonscan →
-                      </a>
-                    </div>
-                  )}
-                </div>
-
-                <div className="amounts">
-                  <div className="amount">
-                    <span>Facture contestée</span>
-                    <strong>{selectedClaim.eneoAmount?.toLocaleString()} FCFA</strong>
-                  </div>
-                  <div className="amount">
-                    <span>Montant blockchain</span>
-                    <strong>{selectedClaim.blockchainConsumption?.toLocaleString()} kWh</strong>
-                  </div>
-                  <div className="amount">
-                    <span>Écart</span>
-                    <strong className="difference">{selectedClaim.difference?.toLocaleString()} FCFA</strong>
-                  </div>
-                </div>
-
-                <div className="progress">
-                  <div className="progress-steps">
-                    <div className={`step ${selectedClaim.status !== 'submitted' ? 'completed' : selectedClaim.status === 'submitted' ? 'active' : ''}`}>
-                      <div className="step-dot"></div>
-                      <span>Soumis</span>
-                    </div>
-                    <div className={`step ${selectedClaim.status === 'transmitted' || selectedClaim.status === 'investigating' || selectedClaim.status === 'resolved' ? 'completed' : selectedClaim.status === 'transmitted' ? 'active' : ''}`}>
-                      <div className="step-dot"></div>
-                      <span>ENEO</span>
-                    </div>
-                    <div className={`step ${selectedClaim.status === 'resolved' ? 'completed' : selectedClaim.status === 'investigating' ? 'active' : ''}`}>
-                      <div className="step-dot"></div>
-                      <span>ARSEL</span>
-                    </div>
-                    <div className={`step ${selectedClaim.status === 'resolved' ? 'completed active' : ''}`}>
-                      <div className="step-dot"></div>
-                      <span>Résolu</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="timeline">
-                  <h3>Suivi détaillé</h3>
-                  {selectedClaim.timeline?.map((item, idx) => (
-                    <div key={idx} className="timeline-item">
-                      <div className="timeline-dot completed"></div>
-                      <div className="timeline-content">
-                        <div className="timeline-title">{item.step}</div>
-                        <div className="timeline-date">{new Date(item.date).toLocaleString('fr-FR')}</div>
-                        <div className="timeline-desc">{item.description}</div>
-                        {item.transactionHash && (
-                          <div className="timeline-tx">
-                            Tx: {item.transactionHash.substring(0, 16)}...
-                          </div>
-                        )}
+            {claims.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon"></div>
+                <h3>Aucune réclamation</h3>
+                <p>Vous n'avez pas encore déposé de réclamation.</p>
+                <button className="btn-primary" onClick={() => onNavigate('reclamation')}>
+                  Déposer une réclamation
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="claims-list">
+                  {claims.map(claim => (
+                    <div
+                      key={claim.claimNumber}
+                      className={`claim-card ${selectedClaim?.claimNumber === claim.claimNumber ? 'active' : ''}`}
+                      onClick={() => setSelectedClaim(claim)}
+                    >
+                      <div className="claim-header">
+                        <span className="claim-number">{claim.claimNumber}</span>
+                        <span className="claim-status" style={{ background: getStatusColor(claim.status) }}>
+                          {getStatusLabel(claim.status)}
+                        </span>
                       </div>
+                      <div className="claim-date">{formatDate(claim.createdAt)}</div>
+                      <div className="claim-amount">
+                        Différence: {claim.difference?.toLocaleString() || '0'} FCFA
+                      </div>
+                      {claim.blockchainHash && (
+                        <div className="blockchain-badge">🔗 Preuve blockchain</div>
+                      )}
                     </div>
                   ))}
                 </div>
 
-                <div className="zone-stats">
-                  <h3>📍 Anomalies dans votre zone (Yaoundé - Mvog-Mbi)</h3>
-                  <div className="stats">
-                    <div>Réclamations actives: <strong>47</strong></div>
-                    <div>Surfacturation: <strong>28</strong></div>
-                    <div>Erreur de relevé: <strong>12</strong></div>
-                    <div>Résolues ce mois: <strong>35</strong></div>
+                {selectedClaim && (
+                  <div className="claim-detail">
+                    <div className="detail-header">
+                      <h2>Réclamation {selectedClaim.claimNumber}</h2>
+                      {selectedClaim.blockchainHash && (
+                        <div className="blockchain-section">
+                          <p className="detail-hash">
+                            🔗 Hash blockchain: {selectedClaim.blockchainHash.substring(0, 20)}...
+                          </p>
+                          <a 
+                            href={`https://amoy.polygonscan.com/tx/${selectedClaim.blockchainHash}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="polygonscan-link"
+                          >
+                            Voir sur Polygonscan →
+                          </a>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="amounts">
+                      <div className="amount">
+                        <span>Facture contestée</span>
+                        <strong>{selectedClaim.eneoAmount?.toLocaleString() || 0} FCFA</strong>
+                      </div>
+                      <div className="amount">
+                        <span>Consommation relevée</span>
+                        <strong>{selectedClaim.blockchainConsumption?.toLocaleString() || 0} kWh</strong>
+                      </div>
+                      <div className="amount">
+                        <span>Écart</span>
+                        <strong className="difference">{selectedClaim.difference?.toLocaleString() || 0} FCFA</strong>
+                      </div>
+                    </div>
+
+                    <div className="progress">
+                      <div className="progress-steps">
+                        {['Soumis', 'ENEO', 'ARSEL', 'Résolu'].map((step, idx) => {
+                          const stepStatus = {
+                            0: selectedClaim.status !== 'submitted',
+                            1: ['transmitted', 'investigating', 'resolved'].includes(selectedClaim.status),
+                            2: ['investigating', 'resolved'].includes(selectedClaim.status),
+                            3: selectedClaim.status === 'resolved'
+                          };
+                          return (
+                            <div key={step} className={`step ${stepStatus[idx] ? 'completed' : selectedClaim.status === step ? 'active' : ''}`}>
+                              <div className="step-dot"></div>
+                              <span>{step}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="timeline">
+                      <h3>Suivi détaillé</h3>
+                      {selectedClaim.timeline?.length > 0 ? (
+                        selectedClaim.timeline.map((item, idx) => (
+                          <div key={idx} className="timeline-item">
+                            <div className="timeline-dot completed"></div>
+                            <div className="timeline-content">
+                              <div className="timeline-title">{item.step}</div>
+                              <div className="timeline-date">{formatDate(item.date)}</div>
+                              <div className="timeline-desc">{item.description}</div>
+                              {item.transactionHash && (
+                                <div className="timeline-tx">
+                                  Tx: {item.transactionHash.substring(0, 16)}...
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p>Aucun historique disponible</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </div>
+                )}
+              </>
             )}
           </>
         )}
+
+        {activeTab === 'blockchain' && (
+          <div className="blockchain-history">
+            {blockchainReadings.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">🔗</div>
+                <h3>Aucune preuve blockchain</h3>
+                <p>Vos relevés de compteur apparaîtront ici une fois enregistrés.</p>
+                <button className="btn-primary" onClick={() => onNavigate('meter-reading')}>
+                  Enregistrer un relevé
+                </button>
+              </div>
+            ) : (
+              <div className="readings-list">
+                <h2> Relevés enregistrés sur la blockchain</h2>
+                <div className="table-container">
+                  <table className="readings-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Index précédent</th>
+                        <th>Index actuel</th>
+                        <th>Hash</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {blockchainReadings.map((reading, idx) => (
+                        <tr key={idx}>
+                          <td>#{reading.id}</td>
+                          <td>{formatDate(reading.timestamp)}</td>
+                          <td>{reading.previousIndex}</td>
+                          <td><strong>{reading.currentIndex}</strong></td>
+                          <td>
+                            <code className="hash-preview">{reading.id?.substring(0, 16)}...</code>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         .suivi-page {
           min-height: 100vh;
           background: #f3f4f6;
@@ -241,6 +299,26 @@ const Suivi = ({ onNavigate }) => {
           font-size: 24px;
           font-weight: 800;
           color: #111827;
+        }
+        .tabs {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 24px;
+          border-bottom: 1px solid #e5e7eb;
+        }
+        .tab {
+          padding: 12px 24px;
+          background: none;
+          border: none;
+          font-size: 14px;
+          font-weight: 600;
+          color: #6b7280;
+          cursor: pointer;
+          border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+          color: #16a344;
+          border-bottom-color: #16a344;
         }
         .claims-list {
           display: flex;
@@ -307,21 +385,16 @@ const Suivi = ({ onNavigate }) => {
           font-family: monospace;
           margin: 5px 0;
         }
-        .proof-verified {
-          font-size: 11px;
-          color: #16a344;
-          margin: 5px 0;
-        }
-        .polygonscan-link {
-          font-size: 11px;
-          color: #2563eb;
-          text-decoration: none;
-        }
         .blockchain-section {
           background: #f3f4f6;
           padding: 12px;
           border-radius: 8px;
           margin-top: 12px;
+        }
+        .polygonscan-link {
+          font-size: 11px;
+          color: #2563eb;
+          text-decoration: none;
         }
         .amounts {
           display: flex;
@@ -419,25 +492,73 @@ const Suivi = ({ onNavigate }) => {
           font-family: monospace;
           margin-top: 4px;
         }
-        .zone-stats {
+        .empty-state {
+          text-align: center;
+          padding: 60px 20px;
+          background: white;
+          border-radius: 20px;
+        }
+        .empty-icon {
+          font-size: 64px;
+          margin-bottom: 16px;
+        }
+        .empty-state h3 {
+          font-size: 18px;
+          margin-bottom: 8px;
+        }
+        .empty-state p {
+          color: #6b7280;
+          margin-bottom: 24px;
+        }
+        .btn-primary {
+          background: #16a344;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 10px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .readings-list h2 {
+          font-size: 18px;
+          margin-bottom: 16px;
+        }
+        .table-container {
+          background: white;
+          border-radius: 16px;
+          overflow-x: auto;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .readings-table {
+          width: 100%;
+          border-collapse: collapse;
+          min-width: 600px;
+        }
+        .readings-table th {
+          padding: 14px 16px;
+          text-align: left;
           background: #f9fafb;
-          padding: 16px;
-          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 600;
+          color: #6b7280;
+          border-bottom: 1px solid #e5e7eb;
         }
-        .zone-stats h3 {
-          font-size: 13px;
-          margin-bottom: 12px;
+        .readings-table td {
+          padding: 14px 16px;
+          border-bottom: 1px solid #e5e7eb;
+          font-size: 14px;
         }
-        .stats {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
+        .hash-preview {
+          font-family: monospace;
+          font-size: 11px;
+          background: #f3f4f6;
+          padding: 4px 8px;
+          border-radius: 6px;
         }
-        .stats div {
-          font-size: 13px;
-        }
-        .stats strong {
-          color: #16a344;
+        @media (max-width: 768px) {
+          .suivi-page { padding: 16px; }
+          .amounts { flex-direction: column; gap: 12px; }
+          .progress-steps { flex-wrap: wrap; gap: 16px; }
         }
       `}</style>
     </div>

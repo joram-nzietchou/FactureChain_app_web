@@ -52,11 +52,13 @@ class ApiService {
   }
 
   async post(endpoint, body) {
+    // ❌ Ne pas ajouter automatiquement contractAddress
+    // ✅ Envoyer uniquement ce qui est dans body
     return this.request(endpoint, {
       method: 'POST',
       body: JSON.stringify(body),
-    });
-  }
+    })
+  };
 
   async put(endpoint, body) {
     return this.request(endpoint, {
@@ -100,6 +102,14 @@ async getBlockchainReading(id) {
 // Récupérer le dernier relevé blockchain
 async getLastBlockchainReading() {
   return this.get('/blockchain/last-reading');
+}
+
+async getBillHistory() {
+  return this.get('/dashboard/bills');
+}
+
+async getBillStats() {
+  return this.get('/dashboard/bills/stats');
 }
 }
 

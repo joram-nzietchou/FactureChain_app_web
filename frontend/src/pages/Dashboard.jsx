@@ -3,6 +3,51 @@ import { useAuth } from '../contexts/AuthContext';
 import claimService from '../services/claimService';
 import api from '../services/api';
 
+// Icônes SVG
+const Icons = {
+  reading: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  ),
+  claim: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+    </svg>
+  ),
+  blockchain: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  ),
+  user: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  ),
+  link: () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  ),
+  dashboard: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7"/>
+      <rect x="14" y="3" width="7" height="7"/>
+      <rect x="14" y="14" width="7" height="7"/>
+      <rect x="3" y="14" width="7" height="7"/>
+    </svg>
+  )
+};
+
 const Dashboard = ({ onNavigate }) => {
   const { user } = useAuth();
   const [dashboardData, setDashboardData] = useState(null);
@@ -15,7 +60,7 @@ const Dashboard = ({ onNavigate }) => {
     network: 'Polygon Amoy',
     lastBlock: null
   });
-  const [filter, setFilter] = useState('all'); // all, anomaly, normal
+  const [filter, setFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const billsPerPage = 5;
 
@@ -82,14 +127,12 @@ const Dashboard = ({ onNavigate }) => {
     }
   };
 
-  // Filtrer les factures
   const filteredBills = bills.filter(bill => {
     if (filter === 'anomaly') return bill.isAnomaly;
     if (filter === 'normal') return !bill.isAnomaly;
     return true;
   });
 
-  // Pagination
   const indexOfLastBill = currentPage * billsPerPage;
   const indexOfFirstBill = indexOfLastBill - billsPerPage;
   const currentBills = filteredBills.slice(indexOfFirstBill, indexOfLastBill);
@@ -138,45 +181,56 @@ const Dashboard = ({ onNavigate }) => {
         }
         .header-actions {
           display: flex;
-          gap: 16px;
+          gap: 12px;
           align-items: center;
           flex-wrap: wrap;
+        }
+        .reading-btn, .claim-btn, .history-chain-btn, .profile-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 18px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.3s;
+          border: none;
+          font-size: 14px;
+        }
+        .reading-btn svg, .claim-btn svg, .history-chain-btn svg, .profile-btn svg {
+          width: 18px;
+          height: 18px;
         }
         .reading-btn {
           background: #8b5cf6;
           color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 12px;
-          cursor: pointer;
-          font-weight: 600;
-          transition: all 0.3s;
+        }
+        .reading-btn:hover {
+          background: #7c3aed;
+          transform: translateY(-2px);
         }
         .claim-btn {
           background: #16a344;
           color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 12px;
-          cursor: pointer;
-          font-weight: 600;
-          transition: all 0.3s;
+        }
+        .claim-btn:hover {
+          background: #0e7a31;
+          transform: translateY(-2px);
         }
         .history-chain-btn {
           background: #6b7280;
           color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 12px;
-          cursor: pointer;
-          font-weight: 600;
-          transition: all 0.3s;
-          display: flex;
-          align-items: center;
-          gap: 8px;
         }
         .history-chain-btn:hover {
           background: #4b5563;
+          transform: translateY(-2px);
+        }
+        .profile-btn {
+          background: #2563eb;
+          color: white;
+        }
+        .profile-btn:hover {
+          background: #1d4ed8;
           transform: translateY(-2px);
         }
         .blockchain-status {
@@ -203,7 +257,6 @@ const Dashboard = ({ onNavigate }) => {
           color: ${blockchainStatus.connected ? '#16a344' : '#ef4444'};
           font-weight: 500;
         }
-        /* Cartes stats */
         .stats-cards {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -227,7 +280,6 @@ const Dashboard = ({ onNavigate }) => {
           color: #6b7280;
           margin-top: 8px;
         }
-        /* Section factures */
         .bills-section {
           background: white;
           border-radius: 20px;
@@ -352,6 +404,10 @@ const Dashboard = ({ onNavigate }) => {
           padding: 16px;
           background: #f9fafb;
           border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
         }
         @media (max-width: 768px) {
           .dashboard { padding: 16px; }
@@ -360,7 +416,7 @@ const Dashboard = ({ onNavigate }) => {
           .bills-table th, .bills-table td { padding: 8px; }
           .bills-table { display: block; overflow-x: auto; }
           .header-actions { flex-direction: column; width: 100%; }
-          .reading-btn, .claim-btn, .history-chain-btn { width: 100%; }
+          .reading-btn, .claim-btn, .history-chain-btn, .profile-btn { width: 100%; justify-content: center; }
           .filter-buttons { width: 100%; justify-content: center; }
         }
       `}</style>
@@ -368,20 +424,28 @@ const Dashboard = ({ onNavigate }) => {
       <div className="dashboard-header">
         <div>
           <h1>Tableau de bord</h1>
-          <p>Bienvenue, {user?.fullName || user?.email?.split('@')[0] || 'Utilisateur'} 👋</p>
+          <p>Bienvenue, {user?.fullName || user?.email?.split('@')[0] || 'Utilisateur'}</p>
         </div>
         <div className="header-actions">
           <button className="reading-btn" onClick={() => onNavigate('meter-reading')}>
-            Nouveau relevé
+            <Icons.reading />
+            <span>Nouveau relevé</span>
           </button>
           <button className="claim-btn" onClick={() => onNavigate('reclamation')}>
-            Nouvelle réclamation
+            <Icons.claim />
+            <span>Nouvelle réclamation</span>
           </button>
           <button className="history-chain-btn" onClick={() => onNavigate('blockchain-history')}>
-            🔗 Historique blockchain
+            <Icons.blockchain />
+            <span>Historique blockchain</span>
+          </button>
+          <button className="profile-btn" onClick={() => onNavigate('profile')}>
+            <Icons.user />
+            <span>Mon profil</span>
           </button>
           <div className="blockchain-status">
             <div className="status-dot"></div>
+            <Icons.link />
             <span className="status-text">
               {blockchainStatus.connected ? `Blockchain connectée` : 'Blockchain déconnectée'}
             </span>
@@ -415,8 +479,9 @@ const Dashboard = ({ onNavigate }) => {
       <div className="bills-section">
         <div className="bills-header">
           <h2>
+            <Icons.dashboard />
             Historique des factures
-            <span className="status-badge normal">🔗 {bills.length} factures</span>
+            <span className="status-badge normal">{bills.length} factures</span>
           </h2>
           <div className="filter-buttons">
             <button 
@@ -464,12 +529,12 @@ const Dashboard = ({ onNavigate }) => {
                       <td>{bill.expectedAmount.toLocaleString()} FCFA</td>
                       <td className={bill.isAnomaly ? 'anomaly-cell' : 'amount-cell'}>
                         {bill.difference > 0 ? '+' : ''}{bill.difference.toLocaleString()} FCFA
-                       </td>
+                      </td>
                       <td>
                         <span className={`status-badge ${bill.isAnomaly ? 'anomaly' : 'normal'}`}>
                           {bill.isAnomaly ? '⚠ Anomalie' : '✓ Normal'}
                         </span>
-                       </td>
+                      </td>
                       <td>
                         {bill.isAnomaly && (
                           <button 
@@ -479,14 +544,13 @@ const Dashboard = ({ onNavigate }) => {
                             Contester
                           </button>
                         )}
-                       </td>
-                     </tr>
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
             </div>
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className="pagination">
                 <button 
@@ -530,8 +594,8 @@ const Dashboard = ({ onNavigate }) => {
 
       {/* Footer */}
       <div className="footer-note">
-        <span>🔗</span>
-        Données enregistrées sur blockchain Polygon — Preuve légale infalsifiable
+        <Icons.link />
+        <span>Données enregistrées sur blockchain Polygon — Preuve légale infalsifiable</span>
         {blockchainStatus.connected && contractAddress && (
           <span style={{ marginLeft: '8px', fontSize: '10px' }}>
             • Contrat: {contractAddress.substring(0, 10)}...

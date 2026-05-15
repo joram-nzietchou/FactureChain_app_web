@@ -2,6 +2,79 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 
+// Icônes SVG
+const Icons = {
+  back: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </svg>
+  ),
+  reading: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  ),
+  user: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  ),
+  info: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="16" x2="12" y2="12"/>
+      <line x1="12" y1="8" x2="12.01" y2="8"/>
+    </svg>
+  ),
+  calendar: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+  ),
+  electricity: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+    </svg>
+  ),
+  blockchain: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  ),
+  success: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+  ),
+  link: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  ),
+  check: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  ),
+  warning: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+  )
+};
+
 // Tarifs ENEO réels
 const TARIFFS = [
   { min: 0, max: 110, rate: 50 },
@@ -91,7 +164,6 @@ const MeterReading = ({ onNavigate }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Calcul en temps réel
   useEffect(() => {
     const previous = parseFloat(formData.previousIndex);
     const current = parseFloat(formData.currentIndex);
@@ -167,7 +239,9 @@ const MeterReading = ({ onNavigate }) => {
     return (
       <div className="success-page">
         <div className="success-container">
-          <div className="success-icon">✅</div>
+          <div className="success-icon">
+            <Icons.success />
+          </div>
           <h1>Relevé enregistré avec succès !</h1>
           
           <div className="result-card">
@@ -190,7 +264,6 @@ const MeterReading = ({ onNavigate }) => {
                 <strong>{result.reading.consumption} kWh</strong>
               </div>
               
-              {/* Détail du calcul par tranche */}
               {calculation && calculation.details && (
                 <div className="calculation-details">
                   <div className="details-title">Détail du calcul :</div>
@@ -218,7 +291,10 @@ const MeterReading = ({ onNavigate }) => {
           </div>
 
           <div className="blockchain-card">
-            <h3>🔗 Preuve Blockchain</h3>
+            <h3>
+              <Icons.blockchain />
+              <span>Preuve Blockchain</span>
+            </h3>
             <div className="blockchain-details">
               <div className="tx-hash">
                 <span>Hash :</span>
@@ -239,16 +315,19 @@ const MeterReading = ({ onNavigate }) => {
               rel="noopener noreferrer"
               className="polygonscan-link"
             >
-              🔍 Voir la transaction sur Polygonscan
+              <Icons.link />
+              <span>Voir la transaction sur Polygonscan</span>
             </a>
           </div>
 
           <div className="actions-buttons">
             <button className="btn-primary" onClick={resetForm}>
-              📝 Nouveau relevé
+              <Icons.reading />
+              <span>Nouveau relevé</span>
             </button>
             <button className="btn-secondary" onClick={() => onNavigate('dashboard')}>
-              🏠 Retour au Dashboard
+              <Icons.back />
+              <span>Retour au Dashboard</span>
             </button>
           </div>
         </div>
@@ -276,8 +355,9 @@ const MeterReading = ({ onNavigate }) => {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
           }
-          .success-icon {
-            font-size: 64px;
+          .success-icon svg {
+            width: 64px;
+            height: 64px;
             margin-bottom: 20px;
           }
           h1 {
@@ -296,6 +376,9 @@ const MeterReading = ({ onNavigate }) => {
             font-size: 16px;
             margin-bottom: 16px;
             color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
           }
           .result-details {
             display: flex;
@@ -337,6 +420,11 @@ const MeterReading = ({ onNavigate }) => {
             color: #16a344;
             font-size: 16px;
           }
+          .blockchain-card h3 svg {
+            width: 20px;
+            height: 20px;
+            stroke: #16a344;
+          }
           .tx-hash code {
             display: block;
             font-size: 11px;
@@ -347,11 +435,17 @@ const MeterReading = ({ onNavigate }) => {
             margin-top: 5px;
           }
           .polygonscan-link {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             margin-top: 16px;
             color: #2563eb;
             text-decoration: none;
             font-size: 13px;
+          }
+          .polygonscan-link svg {
+            width: 14px;
+            height: 14px;
           }
           .actions-buttons {
             display: flex;
@@ -366,10 +460,17 @@ const MeterReading = ({ onNavigate }) => {
             cursor: pointer;
             transition: all 0.3s;
             border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
           }
           .btn-primary {
             background: #16a344;
             color: white;
+          }
+          .btn-primary svg {
+            stroke: white;
           }
           .btn-primary:hover {
             background: #0e7a31;
@@ -398,9 +499,13 @@ const MeterReading = ({ onNavigate }) => {
       <div className="meter-container">
         <div className="meter-header">
           <button className="back-btn" onClick={() => onNavigate('dashboard')}>
-            ← Retour
+            <Icons.back />
+            <span>Retour</span>
           </button>
-          <h1>Relevé de compteur</h1>
+          <h1>
+            <Icons.reading />
+            Relevé de compteur
+          </h1>
           <p>Enregistrez votre index pour générer votre facture selon les tarifs ENEO officiels</p>
         </div>
 
@@ -409,7 +514,10 @@ const MeterReading = ({ onNavigate }) => {
         ) : (
           <form onSubmit={handleSubmit} className="meter-form">
             <div className="form-section">
-              <h3>👤 Informations</h3>
+              <h3>
+                <Icons.user />
+                Informations
+              </h3>
               <div className="form-grid">
                 <div className="info-card">
                   <label>Abonné</label>
@@ -423,7 +531,10 @@ const MeterReading = ({ onNavigate }) => {
             </div>
 
             <div className="form-section">
-              <h3>📅 Période</h3>
+              <h3>
+                <Icons.calendar />
+                Période
+              </h3>
               <div className="form-row">
                 <div className="form-group">
                   <label>Mois</label>
@@ -442,7 +553,10 @@ const MeterReading = ({ onNavigate }) => {
             </div>
 
             <div className="form-section">
-              <h3>⚡ Index du compteur</h3>
+              <h3>
+                <Icons.electricity />
+                Index du compteur
+              </h3>
               <div className="form-row">
                 <div className="form-group">
                   <label>Index précédent</label>
@@ -475,7 +589,6 @@ const MeterReading = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Tarifs info */}
             <div className="tariffs-info">
               <h4>Tarifs ENEO officiels</h4>
               <div className="tariffs-grid">
@@ -487,10 +600,9 @@ const MeterReading = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Calcul de la facture */}
             {calculation && (
               <div className="calculation-section">
-                <h3>💰 Calcul de la facture</h3>
+                <h3>Calcul de la facture</h3>
                 <div className="calculation-details">
                   <div className="calc-row total-consumption">
                     <span>Consommation</span>
@@ -528,7 +640,9 @@ const MeterReading = ({ onNavigate }) => {
             )}
 
             <div className="blockchain-info">
-              <div className="info-icon">🔗</div>
+              <div className="info-icon">
+                <Icons.blockchain />
+              </div>
               <div className="info-text">
                 <strong>Enregistrement sécurisé</strong>
                 <p>Ce relevé sera enregistré sur la blockchain Polygon, offrant une preuve infalsifiable de votre consommation.</p>
@@ -546,7 +660,10 @@ const MeterReading = ({ onNavigate }) => {
                   Enregistrement sur la blockchain...
                 </>
               ) : (
-                '📤 Enregistrer et générer la facture'
+                <>
+                  <Icons.check />
+                  Enregistrer et générer la facture
+                </>
               )}
             </button>
           </form>
@@ -576,13 +693,26 @@ const MeterReading = ({ onNavigate }) => {
           font-size: 14px;
           display: inline-flex;
           align-items: center;
-          gap: 5px;
+          gap: 6px;
+        }
+        .back-btn svg {
+          width: 16px;
+          height: 16px;
         }
         .meter-header h1 {
           font-size: 28px;
           font-weight: 800;
           color: #111827;
           margin-bottom: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+        }
+        .meter-header h1 svg {
+          width: 28px;
+          height: 28px;
+          stroke: #16a344;
         }
         .meter-header p {
           color: #6b7280;
@@ -610,6 +740,13 @@ const MeterReading = ({ onNavigate }) => {
           font-weight: 700;
           margin-bottom: 20px;
           color: #1f2937;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .form-section h3 svg {
+          width: 18px;
+          height: 18px;
         }
         .form-grid {
           display: grid;
@@ -766,8 +903,10 @@ const MeterReading = ({ onNavigate }) => {
           gap: 12px;
           align-items: flex-start;
         }
-        .info-icon {
-          font-size: 24px;
+        .info-icon svg {
+          width: 24px;
+          height: 24px;
+          stroke: #16a344;
         }
         .info-text strong {
           display: block;
@@ -801,6 +940,11 @@ const MeterReading = ({ onNavigate }) => {
         .submit-btn:disabled {
           opacity: 0.7;
           cursor: not-allowed;
+        }
+        .submit-btn svg {
+          width: 18px;
+          height: 18px;
+          stroke: white;
         }
         .spinner {
           width: 20px;

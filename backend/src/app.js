@@ -11,6 +11,7 @@ const claimRoutes = require('./routes/claimRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const errorHandler = require('./middleware/errorHandler');
 const blockchainRoutes = require('./routes/blockchainRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 const meterRoutes = require('./routes/meterRoutes');
 const app = express();
 
@@ -49,6 +50,7 @@ app.use('/api/claims', claimRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/blockchain', blockchainRoutes);
 app.use('/api/meter', meterRoutes);
+app.use('/api/profile', profileRoutes);
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });

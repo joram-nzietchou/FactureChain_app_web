@@ -2,29 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 
-// Icônes SVG
+// Icônes SVG pour LUMINA
 const Icons = {
   back: () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <line x1="19" y1="12" x2="5" y2="12"/>
       <polyline points="12 19 5 12 12 5"/>
     </svg>
   ),
   history: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="12" cy="12" r="10"/>
       <polyline points="12 6 12 12 16 14"/>
     </svg>
   ),
   reading: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="12" cy="12" r="10"/>
       <line x1="12" y1="8" x2="12" y2="12"/>
       <line x1="12" y1="16" x2="12.01" y2="16"/>
     </svg>
   ),
   claim: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
       <polyline points="14 2 14 8 20 8"/>
       <line x1="16" y1="13" x2="8" y2="13"/>
@@ -32,13 +32,13 @@ const Icons = {
     </svg>
   ),
   blockchain: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
     </svg>
   ),
   refresh: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M23 4v6h-6"/>
       <path d="M1 20v-6h6"/>
       <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/>
@@ -46,7 +46,7 @@ const Icons = {
     </svg>
   ),
   list: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <line x1="8" y1="6" x2="21" y2="6"/>
       <line x1="8" y1="12" x2="21" y2="12"/>
       <line x1="8" y1="18" x2="21" y2="18"/>
@@ -56,37 +56,37 @@ const Icons = {
     </svg>
   ),
   verify: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
       <circle cx="12" cy="12" r="3"/>
     </svg>
   ),
   check: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2">
       <polyline points="20 6 9 17 4 12"/>
     </svg>
   ),
   warning: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-      <line x1="12" y1="9" x2="12" y2="13"/>
-      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
+      <path d="M12 9v4"/>
+      <path d="M12 17h.01"/>
+      <circle cx="12" cy="12" r="10"/>
     </svg>
   ),
   close: () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <line x1="18" y1="6" x2="6" y2="18"/>
       <line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   ),
   link: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
     </svg>
   ),
   calendar: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
       <line x1="16" y1="2" x2="16" y2="6"/>
       <line x1="8" y1="2" x2="8" y2="6"/>
@@ -94,19 +94,19 @@ const Icons = {
     </svg>
   ),
   amount: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
       <line x1="12" y1="1" x2="12" y2="23"/>
       <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
     </svg>
   ),
   id: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
       <circle cx="12" cy="7" r="4"/>
     </svg>
   ),
   description: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
       <polyline points="14 2 14 8 20 8"/>
       <line x1="16" y1="13" x2="8" y2="13"/>
@@ -115,8 +115,13 @@ const Icons = {
     </svg>
   ),
   proof: () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+  ),
+  bolt: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
     </svg>
   )
 };
@@ -205,8 +210,32 @@ const BlockchainHistory = ({ onNavigate }) => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <div>Chargement de l'historique blockchain...</div>
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Chargement de l'historique blockchain...</p>
+        <style>{`
+          .loading-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: white;
+            gap: 16px;
+          }
+          .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #f59e0b;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     );
   }
@@ -330,7 +359,7 @@ const BlockchainHistory = ({ onNavigate }) => {
                           <Icons.calendar />
                           <span>{formatDate(item.timestamp || item.createdAt)}</span>
                         </td>
-                        <td>
+                        <td className="details-cell">
                           {item.type === 'reading' ? (
                             <div>{item.previousIndex} → {item.currentIndex} kWh</div>
                           ) : (
@@ -453,50 +482,70 @@ const BlockchainHistory = ({ onNavigate }) => {
       <style>{`
         .history-page {
           min-height: 100vh;
-          background: #f3f4f6;
+          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
           padding: 32px;
+          font-family: 'Inter', sans-serif;
         }
+
         .history-container {
           max-width: 1300px;
           margin: 0 auto;
         }
+
         .history-header {
           margin-bottom: 32px;
         }
+
         .back-btn {
           background: none;
           border: none;
-          color: #16a344;
+          color: #f59e0b;
           cursor: pointer;
           margin-bottom: 16px;
           font-size: 14px;
           display: inline-flex;
           align-items: center;
           gap: 6px;
+          transition: color 0.2s;
         }
+
+        .back-btn:hover {
+          color: #d97706;
+        }
+
         .history-header h1 {
           font-size: 28px;
           font-weight: 800;
-          color: #111827;
-          margin-bottom: 8px;
+          color: #0f172a;
+          margin-bottom: 12px;
           display: flex;
           align-items: center;
           gap: 12px;
         }
+
+        .history-header h1 svg {
+          width: 28px;
+          height: 28px;
+          stroke: #f59e0b;
+        }
+
         .subtitle {
-          color: #6b7280;
+          color: #64748b;
           font-size: 14px;
         }
+
         .error-message {
           background: #fef2f2;
           color: #ef4444;
           padding: 12px 16px;
-          border-radius: 12px;
+          border-radius: 14px;
           margin-bottom: 20px;
           display: flex;
           align-items: center;
           gap: 10px;
+          border: 1px solid #fecaca;
         }
+
         .retry-btn {
           background: #ef4444;
           color: white;
@@ -506,162 +555,210 @@ const BlockchainHistory = ({ onNavigate }) => {
           cursor: pointer;
           margin-left: auto;
         }
+
         .stats-cards {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 20px;
           margin-bottom: 32px;
         }
+
         .stat-card {
           background: white;
-          border-radius: 16px;
+          border-radius: 20px;
           padding: 20px;
           display: flex;
           align-items: center;
           gap: 16px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
           cursor: pointer;
-          transition: transform 0.2s;
-          border: none;
-          width: 100%;
-          text-align: left;
+          transition: all 0.3s;
+          border: 1px solid #e2e8f0;
         }
+
         .stat-card:hover {
           transform: translateY(-2px);
+          border-color: #f59e0b;
         }
+
         .stat-icon svg {
           width: 32px;
           height: 32px;
-          stroke: #16a344;
+          stroke: #f59e0b;
         }
+
         .stat-info {
           display: flex;
           flex-direction: column;
         }
+
         .stat-value {
           font-size: 24px;
           font-weight: 800;
-          color: #16a344;
+          color: #f59e0b;
         }
+
         .stat-label {
           font-size: 12px;
-          color: #6b7280;
+          color: #64748b;
         }
+
         .tabs {
           display: flex;
           gap: 12px;
-          margin-bottom: 24px;
-          border-bottom: 1px solid #e5e7eb;
-          padding-bottom: 12px;
+          margin-bottom: 32px;
+          background: white;
+          border-radius: 60px;
+          padding: 6px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
+
         .tab {
-          padding: 8px 20px;
+          flex: 1;
+          padding: 10px 20px;
           background: none;
           border: none;
           font-size: 14px;
           font-weight: 600;
-          color: #6b7280;
+          color: #64748b;
           cursor: pointer;
-          border-radius: 20px;
-          transition: all 0.2s;
+          border-radius: 40px;
+          transition: all 0.3s;
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
         }
+
         .tab.active {
-          background: #16a344;
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           color: white;
         }
-        .tab svg {
-          width: 16px;
-          height: 16px;
+
+        .tab.active svg {
+          stroke: white;
         }
+
+        .tab svg {
+          width: 18px;
+          height: 18px;
+        }
+
         .items-list h2 {
           font-size: 18px;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
           display: flex;
           align-items: center;
           gap: 8px;
+          color: #0f172a;
         }
+
+        .items-list h2 svg {
+          stroke: #f59e0b;
+        }
+
         .table-container {
           background: white;
-          border-radius: 16px;
+          border-radius: 20px;
           overflow-x: auto;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+          border: 1px solid #e2e8f0;
         }
+
         .items-table {
           width: 100%;
           border-collapse: collapse;
           min-width: 900px;
         }
+
         .items-table th {
           padding: 14px 16px;
           text-align: left;
-          background: #f9fafb;
+          background: #f8fafc;
           font-size: 12px;
           font-weight: 600;
-          color: #6b7280;
-          border-bottom: 1px solid #e5e7eb;
+          color: #64748b;
+          border-bottom: 1px solid #e2e8f0;
         }
+
         .items-table td {
           padding: 14px 16px;
-          border-bottom: 1px solid #e5e7eb;
+          border-bottom: 1px solid #e2e8f0;
           font-size: 14px;
+          color: #475569;
         }
+
         .item-row {
           cursor: pointer;
           transition: background 0.2s;
         }
+
         .item-row:hover {
-          background: #f9fafb;
+          background: #fef3c7;
         }
+
         .type-badge {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          padding: 4px 10px;
+          padding: 4px 12px;
           border-radius: 20px;
           font-size: 11px;
           font-weight: 600;
         }
+
         .reading-badge {
           background: #e8f7ee;
           color: #16a344;
         }
+
         .claim-badge {
           background: #fef2f2;
           color: #ef4444;
         }
+
         .type-badge svg {
           width: 14px;
           height: 14px;
         }
+
         .item-id {
           font-family: monospace;
           font-size: 12px;
+          font-weight: 600;
+          color: #f59e0b;
         }
+
         .date-cell {
           font-size: 12px;
-          color: #6b7280;
+          color: #64748b;
           display: flex;
           align-items: center;
           gap: 6px;
         }
+
         .date-cell svg {
           width: 12px;
           height: 12px;
         }
+
+        .details-cell {
+          font-size: 13px;
+        }
+
         .amount-cell {
           font-weight: 600;
-          color: #16a344;
+          color: #f59e0b;
           display: flex;
           align-items: center;
           gap: 6px;
         }
+
         .amount-cell svg {
           width: 14px;
           height: 14px;
         }
+
         .status-badge {
           padding: 4px 10px;
           border-radius: 20px;
@@ -671,86 +768,121 @@ const BlockchainHistory = ({ onNavigate }) => {
           align-items: center;
           gap: 4px;
         }
+
         .status-badge.normal {
           background: #e8f7ee;
-          color: #0e7a31;
+          color: #16a344;
         }
+
         .status-badge.anomaly {
-          background: #fef2f2;
-          color: #ef4444;
+          background: #fef3c7;
+          color: #f59e0b;
         }
+
         .status-badge.resolved {
-          background: #eff6ff;
-          color: #2563eb;
+          background: #dcfce7;
+          color: #16a344;
         }
+
         .status-badge svg {
           width: 12px;
           height: 12px;
         }
+
         .verify-btn {
-          background: #2563eb;
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           color: white;
           border: none;
           padding: 6px 12px;
-          border-radius: 6px;
+          border-radius: 20px;
           cursor: pointer;
           font-size: 11px;
           display: inline-flex;
           align-items: center;
           gap: 4px;
+          transition: all 0.2s;
         }
+
+        .verify-btn:hover {
+          transform: scale(1.05);
+        }
+
         .verify-btn svg {
           width: 12px;
           height: 12px;
           stroke: white;
         }
+
         .empty-state {
           text-align: center;
           padding: 60px;
           background: white;
-          border-radius: 20px;
+          border-radius: 24px;
+          border: 1px solid #e2e8f0;
         }
+
         .empty-icon svg {
           width: 64px;
           height: 64px;
-          stroke: #9ca3af;
-          margin-bottom: 16px;
+          stroke: #cbd5e1;
+          margin-bottom: 20px;
         }
+
         .empty-state h3 {
           font-size: 18px;
+          font-weight: 700;
           margin-bottom: 8px;
+          color: #0f172a;
         }
+
         .empty-state p {
-          color: #6b7280;
+          color: #64748b;
           margin-bottom: 24px;
         }
+
         .empty-buttons {
           display: flex;
           gap: 16px;
           justify-content: center;
         }
+
         .btn-primary, .btn-secondary {
           padding: 12px 24px;
-          border-radius: 10px;
+          border-radius: 40px;
           font-weight: 600;
           cursor: pointer;
           border: none;
           display: inline-flex;
           align-items: center;
           gap: 8px;
+          transition: all 0.3s;
         }
+
         .btn-primary {
-          background: #16a344;
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           color: white;
         }
+
         .btn-primary svg {
           stroke: white;
         }
+
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(245,158,11,0.3);
+        }
+
         .btn-secondary {
           background: white;
-          border: 1.5px solid #16a344;
-          color: #16a344;
+          border: 1.5px solid #f59e0b;
+          color: #f59e0b;
         }
+
+        .btn-secondary:hover {
+          background: #fef3c7;
+          transform: translateY(-2px);
+        }
+
         .modal-overlay {
           position: fixed;
           top: 0;
@@ -763,16 +895,19 @@ const BlockchainHistory = ({ onNavigate }) => {
           justify-content: center;
           z-index: 1000;
         }
+
         .modal-content {
           background: white;
-          border-radius: 20px;
+          border-radius: 24px;
           padding: 32px;
           max-width: 550px;
           width: 90%;
           max-height: 80vh;
           overflow-y: auto;
           position: relative;
+          box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
+
         .modal-close {
           position: absolute;
           top: 16px;
@@ -780,12 +915,19 @@ const BlockchainHistory = ({ onNavigate }) => {
           background: none;
           border: none;
           cursor: pointer;
-          color: #6b7280;
+          color: #64748b;
+          transition: color 0.2s;
         }
+
+        .modal-close:hover {
+          color: #f59e0b;
+        }
+
         .modal-close svg {
           width: 20px;
           height: 20px;
         }
+
         .modal-content h2 {
           font-size: 20px;
           font-weight: 700;
@@ -793,64 +935,76 @@ const BlockchainHistory = ({ onNavigate }) => {
           display: flex;
           align-items: center;
           gap: 10px;
+          color: #f59e0b;
         }
+
         .detail-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 16px;
           margin: 20px 0;
         }
+
         .detail-item {
           display: flex;
           flex-direction: column;
           gap: 4px;
         }
+
         .detail-item.full-width {
           grid-column: span 2;
         }
+
         .detail-item label {
           font-size: 11px;
-          color: #6b7280;
+          color: #64748b;
           text-transform: uppercase;
           display: flex;
           align-items: center;
           gap: 4px;
         }
+
         .detail-item label svg {
           width: 12px;
           height: 12px;
         }
+
         .detail-item code {
           font-family: monospace;
           font-size: 11px;
-          background: #f3f4f6;
+          background: #f1f5f9;
           padding: 6px 8px;
           border-radius: 6px;
           word-break: break-all;
         }
+
         .amount-highlight {
           font-size: 18px;
-          color: #16a344;
+          color: #f59e0b;
         }
+
         .description-text {
           font-size: 13px;
-          color: #374151;
+          color: #475569;
           line-height: 1.5;
-          background: #f9fafb;
-          padding: 10px;
-          border-radius: 8px;
+          background: #f8fafc;
+          padding: 12px;
+          border-radius: 10px;
           margin-top: 5px;
         }
+
         .tx-hash {
           font-size: 10px;
           word-break: break-all;
         }
+
         .blockchain-proof {
-          background: #e8f7ee;
-          border-radius: 12px;
-          padding: 16px;
-          margin-top: 20px;
+          background: #fef3c7;
+          border-radius: 16px;
+          padding: 20px;
+          margin-top: 24px;
         }
+
         .blockchain-proof h3 {
           font-size: 14px;
           font-weight: 700;
@@ -858,30 +1012,42 @@ const BlockchainHistory = ({ onNavigate }) => {
           display: flex;
           align-items: center;
           gap: 8px;
+          color: #f59e0b;
         }
+
         .polygonscan-link {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          margin-top: 12px;
-          background: #2563eb;
+          margin-top: 16px;
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           color: white;
           border: none;
           padding: 8px 16px;
-          border-radius: 8px;
+          border-radius: 40px;
           cursor: pointer;
+          transition: all 0.3s;
         }
+
+        .polygonscan-link:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(245,158,11,0.3);
+        }
+
         .polygonscan-link:disabled {
-          background: #9ca3af;
+          background: #cbd5e1;
           cursor: not-allowed;
         }
+
         @media (max-width: 768px) {
           .history-page { padding: 16px; }
           .stats-cards { grid-template-columns: repeat(2, 1fr); }
           .empty-buttons { flex-direction: column; }
           .detail-grid { grid-template-columns: 1fr; }
           .detail-item.full-width { grid-column: span 1; }
-          .tabs { flex-wrap: wrap; }
+          .tabs { flex-wrap: wrap; border-radius: 20px; }
+          .tab { padding: 8px 16px; }
+          .history-header h1 { font-size: 24px; }
         }
       `}</style>
     </div>

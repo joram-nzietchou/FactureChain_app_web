@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -15,12 +16,14 @@ const AppContent = () => {
   const { isAuthenticated } = useAuth();
 
   const publicPages = ['login', 'register', 'forgot-password'];
+  
   if (!isAuthenticated && !publicPages.includes(page)) {
     setPage('login');
     return <Login onNavigate={setPage} />;
   }
 
   const pages = {
+    home: <Home onNavigate={setPage} />,
     login: <Login onNavigate={setPage} />,
     register: <Register onNavigate={setPage} />,
     'forgot-password': <ForgotPassword onNavigate={setPage} />,
@@ -32,7 +35,7 @@ const AppContent = () => {
     'blockchain-history': <BlockchainHistory onNavigate={setPage} />
   };
 
-  return pages[page] || pages.dashboard;
+  return pages[page] || pages.login;
 };
 
 const App = () => {

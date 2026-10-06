@@ -2,36 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 
-// Icônes SVG
+// Icônes SVG pour LUMINA
 const Icons = {
   back: () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <line x1="19" y1="12" x2="5" y2="12"/>
       <polyline points="12 19 5 12 12 5"/>
     </svg>
   ),
   reading: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="12" cy="12" r="10"/>
       <line x1="12" y1="8" x2="12" y2="12"/>
       <line x1="12" y1="16" x2="12.01" y2="16"/>
     </svg>
   ),
   user: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
       <circle cx="12" cy="7" r="4"/>
     </svg>
   ),
   info: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="12" cy="12" r="10"/>
       <line x1="12" y1="16" x2="12" y2="12"/>
       <line x1="12" y1="8" x2="12.01" y2="8"/>
     </svg>
   ),
   calendar: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
       <line x1="16" y1="2" x2="16" y2="6"/>
       <line x1="8" y1="2" x2="8" y2="6"/>
@@ -39,38 +39,36 @@ const Icons = {
     </svg>
   ),
   electricity: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
     </svg>
   ),
   blockchain: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
     </svg>
   ),
   success: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2">
       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
       <polyline points="22 4 12 14.01 9 11.01"/>
     </svg>
   ),
   link: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
     </svg>
   ),
   check: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
       <polyline points="20 6 9 17 4 12"/>
     </svg>
   ),
-  warning: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-      <line x1="12" y1="9" x2="12" y2="13"/>
-      <line x1="12" y1="17" x2="12.01" y2="17"/>
+  bolt: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
     </svg>
   )
 };
@@ -335,7 +333,7 @@ const MeterReading = ({ onNavigate }) => {
         <style>{`
           .success-page {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -345,8 +343,8 @@ const MeterReading = ({ onNavigate }) => {
             max-width: 600px;
             width: 100%;
             background: white;
-            border-radius: 24px;
-            padding: 40px;
+            border-radius: 32px;
+            padding: 48px;
             text-align: center;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
             animation: fadeInUp 0.5s ease-out;
@@ -361,21 +359,25 @@ const MeterReading = ({ onNavigate }) => {
             margin-bottom: 20px;
           }
           h1 {
-            color: #16a344;
-            font-size: 24px;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 28px;
             margin-bottom: 30px;
           }
           .result-card, .blockchain-card {
-            background: #f9fafb;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
             text-align: left;
+            border: 1px solid #e2e8f0;
           }
           .result-card h3, .blockchain-card h3 {
             font-size: 16px;
             margin-bottom: 16px;
-            color: #374151;
+            color: #f59e0b;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -388,74 +390,75 @@ const MeterReading = ({ onNavigate }) => {
           .result-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
           }
           .calculation-details {
             margin-top: 16px;
             padding-top: 16px;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid #e2e8f0;
           }
           .details-title {
             font-size: 12px;
             font-weight: 600;
             margin-bottom: 12px;
-            color: #16a344;
+            color: #f59e0b;
           }
           .detail-row {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
             padding: 6px 0;
-            color: #6b7280;
+            color: #64748b;
           }
           .detail-row.total, .detail-row.grand-total {
             padding-top: 10px;
             margin-top: 5px;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid #cbd5e1;
             font-weight: 600;
-            color: #111827;
+            color: #0f172a;
           }
           .detail-row.grand-total strong {
-            color: #16a344;
+            color: #f59e0b;
             font-size: 16px;
           }
           .blockchain-card h3 svg {
             width: 20px;
             height: 20px;
-            stroke: #16a344;
+            stroke: #f59e0b;
           }
           .tx-hash code {
             display: block;
             font-size: 11px;
             word-break: break-all;
-            background: white;
-            padding: 8px;
-            border-radius: 8px;
-            margin-top: 5px;
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 8px;
+            border: 1px solid #e2e8f0;
           }
           .polygonscan-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             margin-top: 16px;
-            color: #2563eb;
+            color: #f59e0b;
             text-decoration: none;
             font-size: 13px;
+            font-weight: 500;
           }
-          .polygonscan-link svg {
-            width: 14px;
-            height: 14px;
+          .polygonscan-link:hover {
+            text-decoration: underline;
           }
           .actions-buttons {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 16px;
+            margin-top: 24px;
           }
           .btn-primary, .btn-secondary {
             flex: 1;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -466,27 +469,27 @@ const MeterReading = ({ onNavigate }) => {
             gap: 8px;
           }
           .btn-primary {
-            background: #16a344;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
             color: white;
           }
           .btn-primary svg {
             stroke: white;
           }
           .btn-primary:hover {
-            background: #0e7a31;
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245,158,11,0.3);
           }
           .btn-secondary {
             background: white;
-            border: 1.5px solid #16a344;
-            color: #16a344;
+            border: 1.5px solid #f59e0b;
+            color: #f59e0b;
           }
           .btn-secondary:hover {
-            background: #e8f7ee;
+            background: #fef3c7;
             transform: translateY(-2px);
           }
           @media (max-width: 600px) {
-            .success-container { padding: 24px; }
+            .success-container { padding: 32px 24px; }
             .actions-buttons { flex-direction: column; }
           }
         `}</style>
@@ -510,7 +513,10 @@ const MeterReading = ({ onNavigate }) => {
         </div>
 
         {loading ? (
-          <div className="loading-spinner">Chargement...</div>
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+            <p>Chargement de vos données...</p>
+          </div>
         ) : (
           <form onSubmit={handleSubmit} className="meter-form">
             <div className="form-section">
@@ -518,7 +524,7 @@ const MeterReading = ({ onNavigate }) => {
                 <Icons.user />
                 Informations
               </h3>
-              <div className="form-grid">
+              <div className="info-grid">
                 <div className="info-card">
                   <label>Abonné</label>
                   <span>{user?.fullName || user?.email?.split('@')[0]}</span>
@@ -590,7 +596,10 @@ const MeterReading = ({ onNavigate }) => {
             </div>
 
             <div className="tariffs-info">
-              <h4>Tarifs ENEO officiels</h4>
+              <h4>
+                <Icons.bolt />
+                Tarifs ENEO officiels
+              </h4>
               <div className="tariffs-grid">
                 <div className="tariff-item">0 - 110 kWh : 50 FCFA/kWh</div>
                 <div className="tariff-item">111 - 220 kWh : 79 FCFA/kWh</div>
@@ -602,9 +611,9 @@ const MeterReading = ({ onNavigate }) => {
 
             {calculation && (
               <div className="calculation-section">
-                <h3>Calcul de la facture</h3>
+                <h3>Calcul de votre facture</h3>
                 <div className="calculation-details">
-                  <div className="calc-row total-consumption">
+                  <div className="calc-row consumption">
                     <span>Consommation</span>
                     <strong>{calculation.consumption} kWh</strong>
                   </div>
@@ -632,7 +641,7 @@ const MeterReading = ({ onNavigate }) => {
                     <strong>{calculation.total.toLocaleString()} FCFA</strong>
                   </div>
                   <div className="calc-note">
-                    <span>💰 Prix moyen :</span>
+                    <span>Prix moyen</span>
                     <span>{calculation.averageRate} FCFA/kWh</span>
                   </div>
                 </div>
@@ -673,220 +682,286 @@ const MeterReading = ({ onNavigate }) => {
       <style>{`
         .meter-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
           padding: 40px 20px;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
+
         .meter-container {
           max-width: 700px;
           margin: 0 auto;
         }
+
         .meter-header {
           margin-bottom: 32px;
           text-align: center;
         }
+
         .back-btn {
           background: none;
           border: none;
-          color: #16a344;
+          color: #f59e0b;
           cursor: pointer;
           margin-bottom: 16px;
           font-size: 14px;
           display: inline-flex;
           align-items: center;
           gap: 6px;
+          transition: color 0.2s;
         }
-        .back-btn svg {
-          width: 16px;
-          height: 16px;
+
+        .back-btn:hover {
+          color: #d97706;
         }
+
         .meter-header h1 {
           font-size: 28px;
           font-weight: 800;
-          color: #111827;
-          margin-bottom: 8px;
+          color: #0f172a;
+          margin-bottom: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 12px;
         }
+
         .meter-header h1 svg {
-          width: 28px;
-          height: 28px;
-          stroke: #16a344;
+          width: 32px;
+          height: 32px;
+          stroke: #f59e0b;
         }
+
         .meter-header p {
-          color: #6b7280;
+          color: #64748b;
+          font-size: 14px;
         }
+
         .loading-spinner {
           text-align: center;
           padding: 60px;
           background: white;
-          border-radius: 20px;
-          color: #16a344;
+          border-radius: 24px;
+          color: #f59e0b;
         }
+
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 3px solid #e2e8f0;
+          border-top-color: #f59e0b;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+          margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+
         .meter-form {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 24px;
         }
+
         .form-section {
           background: white;
-          border-radius: 20px;
-          padding: 24px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          border-radius: 24px;
+          padding: 28px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+          border: 1px solid #e2e8f0;
         }
+
         .form-section h3 {
           font-size: 16px;
           font-weight: 700;
           margin-bottom: 20px;
-          color: #1f2937;
+          color: #f59e0b;
           display: flex;
           align-items: center;
           gap: 8px;
         }
+
         .form-section h3 svg {
           width: 18px;
           height: 18px;
         }
-        .form-grid {
+
+        .info-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 16px;
         }
+
         .info-card {
-          background: #f9fafb;
-          padding: 12px 16px;
-          border-radius: 12px;
+          background: #f8fafc;
+          padding: 14px 16px;
+          border-radius: 14px;
         }
+
         .info-card label {
           display: block;
           font-size: 11px;
-          color: #6b7280;
+          color: #64748b;
           margin-bottom: 4px;
         }
+
         .info-card span {
           font-weight: 600;
-          color: #111827;
+          color: #0f172a;
         }
+
         .form-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 20px;
         }
+
         .form-group {
           display: flex;
           flex-direction: column;
           gap: 8px;
         }
+
         .form-group label {
           font-size: 13px;
           font-weight: 600;
-          color: #374151;
+          color: #334155;
         }
+
         .form-group input, .form-group select {
           padding: 12px 16px;
-          border: 1.5px solid #e5e7eb;
-          border-radius: 12px;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 14px;
           font-size: 14px;
           transition: all 0.2s;
+          background: #f8fafc;
         }
+
         .form-group input:focus, .form-group select:focus {
           outline: none;
-          border-color: #16a344;
-          box-shadow: 0 0 0 3px rgba(22,163,68,0.1);
+          border-color: #f59e0b;
+          background: white;
+          box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
         }
+
         .index-display {
           position: relative;
         }
+
         .info-badge {
           position: absolute;
           right: 12px;
           top: 50%;
           transform: translateY(-50%);
           font-size: 11px;
-          color: #16a344;
-          background: #e8f7ee;
+          color: #f59e0b;
+          background: #fef3c7;
           padding: 2px 8px;
           border-radius: 20px;
         }
+
         .tariffs-info {
-          background: #eff6ff;
+          background: #fef3c7;
           border-radius: 16px;
-          padding: 16px;
+          padding: 20px;
         }
+
         .tariffs-info h4 {
           font-size: 13px;
           font-weight: 600;
           margin-bottom: 12px;
-          color: #2563eb;
+          color: #f59e0b;
+          display: flex;
+          align-items: center;
+          gap: 6px;
         }
+
+        .tariffs-info h4 svg {
+          width: 16px;
+          height: 16px;
+        }
+
         .tariffs-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 8px;
+          gap: 10px;
           font-size: 12px;
         }
+
         .tariff-item {
-          color: #374151;
+          color: #475569;
         }
+
         .tariff-item.tva {
-          color: #16a344;
+          color: #f59e0b;
           font-weight: 600;
         }
+
         .calculation-section {
-          background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+          background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
           border-radius: 20px;
           padding: 24px;
           color: white;
         }
+
         .calculation-section h3 {
           color: white;
           margin-bottom: 20px;
           font-size: 16px;
         }
+
         .calculation-details {
           background: rgba(255,255,255,0.1);
           border-radius: 16px;
-          padding: 16px;
+          padding: 20px;
         }
+
         .calc-row {
           display: flex;
           justify-content: space-between;
-          padding: 10px 0;
+          padding: 12px 0;
           border-bottom: 1px solid rgba(255,255,255,0.2);
         }
-        .calc-row.total-consumption {
+
+        .calc-row.consumption {
           font-size: 18px;
           font-weight: bold;
         }
+
         .calc-row.total {
           border-bottom: none;
           padding-top: 15px;
           margin-top: 5px;
           font-size: 18px;
         }
+
         .calc-row.total strong {
           font-size: 22px;
           color: #fbbf24;
         }
+
         .calc-breakdown {
           margin: 12px 0;
           padding: 12px;
           background: rgba(0,0,0,0.2);
           border-radius: 12px;
         }
+
         .breakdown-title {
           font-size: 12px;
           margin-bottom: 8px;
           opacity: 0.8;
         }
+
         .breakdown-row {
           display: flex;
           justify-content: space-between;
           font-size: 12px;
-          padding: 4px 0;
+          padding: 6px 0;
           opacity: 0.9;
         }
+
         .calc-note {
           display: flex;
           justify-content: space-between;
@@ -895,35 +970,41 @@ const MeterReading = ({ onNavigate }) => {
           border-top: 1px solid rgba(255,255,255,0.2);
           font-size: 12px;
         }
+
         .blockchain-info {
-          background: #e8f7ee;
+          background: #fef3c7;
           border-radius: 16px;
           padding: 16px;
           display: flex;
           gap: 12px;
           align-items: flex-start;
         }
+
         .info-icon svg {
           width: 24px;
           height: 24px;
-          stroke: #16a344;
+          stroke: #f59e0b;
         }
+
         .info-text strong {
           display: block;
           font-size: 13px;
-          color: #16a344;
+          color: #f59e0b;
           margin-bottom: 4px;
         }
+
         .info-text p {
           font-size: 12px;
-          color: #374151;
+          color: #92400e;
+          line-height: 1.4;
         }
+
         .submit-btn {
-          background: #16a344;
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           color: white;
           border: none;
           padding: 16px;
-          border-radius: 16px;
+          border-radius: 40px;
           font-size: 16px;
           font-weight: 700;
           cursor: pointer;
@@ -933,36 +1014,30 @@ const MeterReading = ({ onNavigate }) => {
           justify-content: center;
           gap: 10px;
         }
+
         .submit-btn:hover:not(:disabled) {
-          background: #0e7a31;
           transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(245,158,11,0.3);
         }
+
         .submit-btn:disabled {
           opacity: 0.7;
           cursor: not-allowed;
         }
+
         .submit-btn svg {
           width: 18px;
           height: 18px;
           stroke: white;
         }
-        .spinner {
-          width: 20px;
-          height: 20px;
-          border: 2px solid white;
-          border-top-color: transparent;
-          border-radius: 50%;
-          animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
+
         @media (max-width: 640px) {
           .meter-page { padding: 20px; }
           .form-row { grid-template-columns: 1fr; }
-          .form-grid { grid-template-columns: 1fr; }
+          .info-grid { grid-template-columns: 1fr; }
           .tariffs-grid { grid-template-columns: 1fr; }
           .meter-header h1 { font-size: 24px; }
+          .form-section { padding: 20px; }
         }
       `}</style>
     </div>

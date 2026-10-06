@@ -2,23 +2,110 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 
-// Icônes SVG (conservées)
+// Icônes SVG pour LUMINA
 const Icons = {
-  user: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>),
-  mail: () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>),
-  phone: () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>),
-  location: () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>),
-  calendar: () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>),
-  lock: () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>),
-  edit: () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 3l4 4-7 7H10v-4l7-7z"/><path d="M4 20h16"/></svg>),
-  save: () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>),
-  logout: () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>),
-  arrowLeft: () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>),
-  stats: () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>),
-  reading: () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>),
-  claim: () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>),
-  warning: () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>),
-  success: () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>)
+  back: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </svg>
+  ),
+  user: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  ),
+  mail: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <path d="m22 7-10 7L2 7"/>
+    </svg>
+  ),
+  phone: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+  ),
+  location: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </svg>
+  ),
+  calendar: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+  ),
+  lock: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+  ),
+  edit: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
+      <path d="M4 20h16"/>
+    </svg>
+  ),
+  save: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+      <polyline points="17 21 17 13 7 13 7 21"/>
+      <polyline points="7 3 7 8 15 8"/>
+    </svg>
+  ),
+  logout: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      <polyline points="16 17 21 12 16 7"/>
+      <line x1="21" x2="9" y1="12" y2="12"/>
+    </svg>
+  ),
+  stats: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="18" y1="20" x2="18" y2="10"/>
+      <line x1="12" y1="20" x2="12" y2="4"/>
+      <line x1="6" y1="20" x2="6" y2="14"/>
+    </svg>
+  ),
+  reading: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  ),
+  claim: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+    </svg>
+  ),
+  warning: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
+      <path d="M12 9v4"/>
+      <path d="M12 17h.01"/>
+      <circle cx="12" cy="12" r="10"/>
+    </svg>
+  ),
+  success: () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a344" strokeWidth="2">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  ),
+  bolt: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </svg>
+  )
 };
 
 const Profile = ({ onNavigate }) => {
@@ -40,7 +127,6 @@ const Profile = ({ onNavigate }) => {
     confirmPassword: ''
   });
 
-  // Charger les vraies statistiques
   useEffect(() => {
     loadStats();
   }, []);
@@ -130,7 +216,7 @@ const Profile = ({ onNavigate }) => {
       <div className="profile-container">
         <div className="profile-header">
           <button className="back-btn" onClick={() => onNavigate('dashboard')}>
-            <Icons.arrowLeft />
+            <Icons.back />
             <span>Retour</span>
           </button>
           <h1>Mon profil</h1>
@@ -143,7 +229,10 @@ const Profile = ({ onNavigate }) => {
             </div>
             <h2>{user?.fullName || user?.email?.split('@')[0]}</h2>
             <p className="profile-email">{user?.email}</p>
-            <span className="profile-badge">Abonné ENEO</span>
+            <span className="profile-badge">
+              <Icons.bolt />
+              <span>Abonné LUMINA</span>
+            </span>
           </div>
         </div>
 
@@ -199,6 +288,8 @@ const Profile = ({ onNavigate }) => {
                     <option value="Garoua">Garoua</option>
                     <option value="Bamenda">Bamenda</option>
                     <option value="Bafoussam">Bafoussam</option>
+                    <option value="Maroua">Maroua</option>
+                    <option value="Ngaoundéré">Ngaoundéré</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -221,15 +312,21 @@ const Profile = ({ onNavigate }) => {
             <form onSubmit={handleChangePassword} className="profile-form">
               <div className="form-group">
                 <label>Mot de passe actuel</label>
-                <input type="password" name="currentPassword" value={passwordData.currentPassword} onChange={handlePasswordChange} placeholder="Entrez votre mot de passe actuel" required />
+                <div className="password-input-wrapper">
+                  <input type="password" name="currentPassword" value={passwordData.currentPassword} onChange={handlePasswordChange} placeholder="Entrez votre mot de passe actuel" required />
+                </div>
               </div>
               <div className="form-group">
                 <label>Nouveau mot de passe</label>
-                <input type="password" name="newPassword" value={passwordData.newPassword} onChange={handlePasswordChange} placeholder="Minimum 6 caractères" required />
+                <div className="password-input-wrapper">
+                  <input type="password" name="newPassword" value={passwordData.newPassword} onChange={handlePasswordChange} placeholder="Minimum 6 caractères" required />
+                </div>
               </div>
               <div className="form-group">
                 <label>Confirmer le nouveau mot de passe</label>
-                <input type="password" name="confirmPassword" value={passwordData.confirmPassword} onChange={handlePasswordChange} placeholder="Confirmez votre nouveau mot de passe" required />
+                <div className="password-input-wrapper">
+                  <input type="password" name="confirmPassword" value={passwordData.confirmPassword} onChange={handlePasswordChange} placeholder="Confirmez votre nouveau mot de passe" required />
+                </div>
               </div>
               <button type="submit" className="save-btn" disabled={loading}>
                 <Icons.save />
@@ -241,7 +338,10 @@ const Profile = ({ onNavigate }) => {
           {activeTab === 'stats' && (
             <div className="stats-container">
               {statsLoading ? (
-                <div className="loading-stats">Chargement des statistiques...</div>
+                <div className="loading-stats">
+                  <div className="spinner"></div>
+                  <p>Chargement de vos statistiques...</p>
+                </div>
               ) : stats ? (
                 <div className="stats-grid">
                   <div className="stat-card">
@@ -286,7 +386,11 @@ const Profile = ({ onNavigate }) => {
                   </div>
                 </div>
               ) : (
-                <div className="error-stats">Impossible de charger les statistiques</div>
+                <div className="error-stats">
+                  <Icons.warning />
+                  <p>Impossible de charger les statistiques</p>
+                  <button onClick={loadStats} className="retry-btn">Réessayer</button>
+                </div>
               )}
             </div>
           )}
@@ -303,19 +407,23 @@ const Profile = ({ onNavigate }) => {
       <style>{`
         .profile-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
           padding: 32px;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
+
         .profile-container {
           max-width: 800px;
           margin: 0 auto;
         }
+
         .profile-header {
           display: flex;
           align-items: center;
           gap: 20px;
           margin-bottom: 24px;
         }
+
         .back-btn {
           background: none;
           border: none;
@@ -325,24 +433,33 @@ const Profile = ({ onNavigate }) => {
           display: flex;
           align-items: center;
           gap: 6px;
+          transition: color 0.2s;
         }
+
+        .back-btn:hover {
+          color: #f59e0b;
+        }
+
         .profile-header h1 {
           font-size: 28px;
           font-weight: 800;
           color: white;
           margin: 0;
         }
+
         .profile-cover {
           background: white;
           border-radius: 24px;
           padding: 32px;
           text-align: center;
           margin-bottom: 24px;
+          box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
         }
+
         .avatar {
           width: 100px;
           height: 100px;
-          background: linear-gradient(135deg, #16a344 0%, #2563eb 100%);
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -352,34 +469,47 @@ const Profile = ({ onNavigate }) => {
           font-weight: bold;
           color: white;
         }
+
         .profile-cover h2 {
           font-size: 22px;
           font-weight: 700;
-          color: #111827;
+          color: #0f172a;
           margin-bottom: 4px;
         }
+
         .profile-email {
-          color: #6b7280;
+          color: #64748b;
           font-size: 14px;
           margin-bottom: 12px;
         }
+
         .profile-badge {
-          display: inline-block;
-          background: #e8f7ee;
-          color: #16a344;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: #fef3c7;
+          color: #f59e0b;
           padding: 4px 12px;
           border-radius: 20px;
           font-size: 12px;
           font-weight: 500;
         }
+
+        .profile-badge svg {
+          width: 14px;
+          height: 14px;
+        }
+
         .profile-tabs {
           display: flex;
           gap: 8px;
           margin-bottom: 24px;
           background: white;
-          border-radius: 50px;
+          border-radius: 60px;
           padding: 6px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
+
         .tab {
           flex: 1;
           padding: 12px 20px;
@@ -387,7 +517,7 @@ const Profile = ({ onNavigate }) => {
           border: none;
           font-size: 14px;
           font-weight: 600;
-          color: #6b7280;
+          color: #64748b;
           cursor: pointer;
           border-radius: 40px;
           transition: all 0.3s;
@@ -396,83 +526,109 @@ const Profile = ({ onNavigate }) => {
           gap: 8px;
           justify-content: center;
         }
+
         .tab.active {
-          background: #16a344;
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           color: white;
         }
+
         .tab svg {
           width: 18px;
           height: 18px;
         }
+
+        .tab.active svg {
+          stroke: white;
+        }
+
         .message {
           background: white;
           padding: 12px 16px;
-          border-radius: 12px;
+          border-radius: 16px;
           margin-bottom: 20px;
           display: flex;
           align-items: center;
           gap: 10px;
         }
+
         .message.success {
           background: #e8f7ee;
           color: #16a344;
           border: 1px solid #86efac;
         }
+
         .message.error {
           background: #fef2f2;
           color: #ef4444;
           border: 1px solid #fca5a5;
         }
+
         .profile-content {
           background: white;
           border-radius: 24px;
           padding: 32px;
           margin-bottom: 24px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
+
         .profile-form {
           display: flex;
           flex-direction: column;
           gap: 20px;
         }
+
         .form-group {
           display: flex;
           flex-direction: column;
           gap: 8px;
         }
+
         .form-group label {
           font-size: 13px;
           font-weight: 600;
-          color: #374151;
+          color: #334155;
         }
+
         .form-group input, .form-group select {
           padding: 12px 16px;
-          border: 1.5px solid #e5e7eb;
-          border-radius: 12px;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 14px;
           font-size: 14px;
+          transition: all 0.2s;
         }
+
         .form-group input:focus, .form-group select:focus {
           outline: none;
-          border-color: #16a344;
+          border-color: #f59e0b;
+          box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
         }
+
         .form-group input.disabled {
-          background: #f3f4f6;
-          color: #6b7280;
+          background: #f8fafc;
+          color: #64748b;
         }
+
         .form-group small {
           font-size: 11px;
-          color: #9ca3af;
+          color: #94a3b8;
         }
+
         .form-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 20px;
         }
+
+        .password-input-wrapper {
+          position: relative;
+        }
+
         .save-btn {
-          background: #16a344;
+          background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
           color: white;
           border: none;
           padding: 14px;
-          border-radius: 12px;
+          border-radius: 14px;
           font-size: 15px;
           font-weight: 600;
           cursor: pointer;
@@ -480,58 +636,115 @@ const Profile = ({ onNavigate }) => {
           align-items: center;
           gap: 10px;
           justify-content: center;
+          transition: all 0.3s;
         }
+
         .save-btn:hover {
-          background: #0e7a31;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(245,158,11,0.3);
         }
+
         .save-btn:disabled {
           opacity: 0.7;
           cursor: not-allowed;
         }
+
         .stats-container {
           width: 100%;
         }
-        .loading-stats, .error-stats {
+
+        .loading-stats {
           text-align: center;
-          padding: 40px;
-          color: #6b7280;
+          padding: 60px;
+          color: #64748b;
         }
+
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 3px solid #e2e8f0;
+          border-top-color: #f59e0b;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+          margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+
+        .error-stats {
+          text-align: center;
+          padding: 60px;
+          color: #ef4444;
+        }
+
+        .error-stats svg {
+          width: 48px;
+          height: 48px;
+          margin: 0 auto 16px;
+          stroke: #ef4444;
+        }
+
+        .retry-btn {
+          margin-top: 16px;
+          padding: 8px 20px;
+          background: #f59e0b;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+        }
+
         .stats-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 16px;
         }
+
         .stat-card {
-          background: #f9fafb;
-          border-radius: 16px;
-          padding: 20px;
+          background: #f8fafc;
+          border-radius: 20px;
+          padding: 24px;
           text-align: center;
+          transition: transform 0.2s;
+          border: 1px solid #e2e8f0;
         }
+
+        .stat-card:hover {
+          transform: translateY(-2px);
+          border-color: #f59e0b;
+        }
+
         .stat-card svg {
           width: 32px;
           height: 32px;
-          stroke: #16a344;
-          margin-bottom: 8px;
+          stroke: #f59e0b;
+          margin-bottom: 12px;
         }
+
         .stat-value {
-          font-size: 24px;
+          font-size: 28px;
           font-weight: 800;
-          color: #16a344;
+          color: #0f172a;
         }
+
         .stat-label {
-          font-size: 11px;
-          color: #6b7280;
-          margin-top: 4px;
+          font-size: 12px;
+          color: #64748b;
+          margin-top: 8px;
         }
+
         .logout-section {
           text-align: center;
         }
+
         .logout-btn {
           background: #ef4444;
           color: white;
           border: none;
           padding: 14px;
-          border-radius: 12px;
+          border-radius: 14px;
           font-size: 15px;
           font-weight: 600;
           cursor: pointer;
@@ -540,16 +753,21 @@ const Profile = ({ onNavigate }) => {
           align-items: center;
           gap: 10px;
           justify-content: center;
+          transition: all 0.3s;
         }
+
         .logout-btn:hover {
           background: #dc2626;
+          transform: translateY(-2px);
         }
+
         @media (max-width: 640px) {
           .profile-page { padding: 16px; }
           .form-row { grid-template-columns: 1fr; }
           .stats-grid { grid-template-columns: 1fr; }
-          .profile-tabs { flex-wrap: wrap; border-radius: 16px; }
+          .profile-tabs { flex-wrap: wrap; border-radius: 20px; }
           .tab { border-radius: 12px; }
+          .profile-header h1 { font-size: 24px; }
         }
       `}</style>
     </div>

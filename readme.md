@@ -1,4 +1,4 @@
-et<div align="center">
+<div align="center">
 
 # ⚡ LUMINA
 
@@ -119,7 +119,7 @@ flowchart TD
 
 ```bash
 git clone https://github.com/joram-nzietchou/FactureChain_app_web.git
-cd LUMINA
+cd FactureChain_app_web
 
 # Installer les dépendances de chaque module
 cd backend && npm install && cd ..

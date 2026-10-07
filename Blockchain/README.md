@@ -1,74 +1,126 @@
-#  FactureChain - Système de Réclamation Blockchain (ENEO)
+# 🔗 Lumina — Réclamations ENEO sur la blockchain
 
-Ce module permet d'enregistrer les plaintes de surfacturation de manière immuable sur la Blockchain et de notifier les utilisateurs en temps réel.
+Module blockchain de LUMINA. Il enregistre les réclamations de surfacturation de façon **immuable** sur la blockchain et **notifie les utilisateurs en temps réel**.
 
+[← Retour au README principal](../README.md)
 
-## 1. INSTALLATION INITIALE
-*À faire une seule fois pour préparer l'environnement sur le PC.*
+---
+
+## Sommaire
+
+- [Aperçu](#aperçu)
+- [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Lancer la démonstration](#lancer-la-démonstration)
+- [Test de validation](#test-de-validation)
+- [Intégration frontend](#intégration-frontend)
+- [Dépannage](#dépannage)
+
+---
+
+## Aperçu
+
+```mermaid
+flowchart LR
+    A["Hardhat node<br/>(réseau local)"] --- B["Smart contract<br/>ReclamationSystem"]
+    B -->|événement| C["Serveur de notifications<br/>server.js"]
+    C -->|WebSocket| D["Application"]
+```
+
+| Composant | Rôle |
+|-----------|------|
+| `Reclamation.sol` | Smart contract : enregistrement des réclamations |
+| `scripts/deploy.js` | Déploiement du contrat sur le réseau choisi |
+| `scripts/test-direct.cjs` | Simulation d'une plainte pour valider la chaîne complète |
+| `server.js` | Écoute les événements du contrat et envoie les alertes |
+
+---
+
+## Prérequis
+
+- Node.js v18+
+- npm
+
+---
+
+## Installation
+
+À faire **une seule fois** :
 
 ```bash
-# Installation des bibliothèques (Blockchain + Backend)
+# Dépendances (blockchain + serveur)
 npm install
 
-# Compilation du Smart Contract (génère l'ABI pour le Frontend)
+# Compilation du smart contract (génère l'ABI pour le frontend)
 npx hardhat compile
 ```
 
 ---
 
-##  2. LANCEMENT DE LA DÉMONSTRATION
-*Ouvrez **3 terminaux** distincts et suivez cet ordre précis :*
+## Lancer la démonstration
 
-###  TERMINAL 1 : LE RÉSEAU BLOCKCHAIN
+Ouvrez **3 terminaux** et suivez cet ordre.
+
+### Terminal 1 — Réseau blockchain
+
 ```bash
 npx hardhat node
 ```
-*Laissez ce terminal ouvert. Il simule le registre public.*
 
-###  TERMINAL 2 : DÉPLOIEMENT DU CONTRAT
+Laissez ce terminal ouvert : il simule le registre public.
+
+### Terminal 2 — Déploiement du contrat
+
 ```bash
 npx hardhat run scripts/deploy.js --network localhost
 ```
-*👉 **Action requise** : Copiez l'adresse du contrat affichée et vérifiez qu'elle est identique dans `server.js` et `test-direct.cjs`.*
 
-###  TERMINAL 3 : LE SERVEUR DE NOTIFICATIONS
+> **Action requise :** copiez l'adresse du contrat affichée et vérifiez qu'elle est identique dans `server.js` et `scripts/test-direct.cjs`.
+
+### Terminal 3 — Serveur de notifications
+
 ```bash
 node server.js
 ```
-*Ce serveur fait le lien entre la Blockchain et l'App mobile.*
+
+Ce serveur fait le lien entre la blockchain et l'application.
 
 ---
 
-##  3. TEST DE VALIDATION (SIMULATION PLAINTE)
-*À exécuter dans le **TERMINAL 2** pour prouver que tout communique.*
+## Test de validation
+
+Depuis le **Terminal 2**, simulez une plainte :
 
 ```bash
 npx hardhat run scripts/test-direct.cjs --network localhost
 ```
+
 **Résultat attendu :**
-- Terminal 2 : `✅ Succès ! Réclamation enregistrée.`
-- Terminal 3 (Serveur) : `🔔 Alerte : Nouvelle réclamation détectée !`
+
+| Terminal | Message |
+|----------|---------|
+| 2 | `✅ Succès ! Réclamation enregistrée.` |
+| 3 | `🔔 Alerte : Nouvelle réclamation détectée !` |
 
 ---
 
-##  4. COMMANDES DE SECOURS (EN CAS DE BUG)
-*Si le terminal est figé ou si vous avez des erreurs rouges.*
+## Intégration frontend
 
-```bash
-# 1. Arrêter un processus bloqué
-Appuyer sur [CTRL + C]
+| Élément | Valeur |
+|---------|--------|
+| Adresse du contrat (déploiement local par défaut) | `0x5FbDB2315678afecb367f032d93F642f64180aa3` |
+| ABI | `./artifacts/contracts/Reclamation.sol/ReclamationSystem.json` |
+| URL WebSocket | `http://localhost:3000` |
 
-# 2. Nettoyer les anciens fichiers de test
-npx hardhat clean
-
-# 3. Forcer la mise à jour des modules
-npm pkg set type="module"
-```
+> L'adresse ci-dessus est celle d'un premier déploiement sur un nœud Hardhat vierge. Elle change si le nœud a déjà reçu des transactions : utilisez toujours l'adresse affichée par votre déploiement.
 
 ---
 
-##  5. INTERFACE FRONTEND (DOSSIER DE LIVRAISON)
- éléments du développement Frontend :
-1. **Adresse du contrat** : `0x5FbDB2315678afecb367f032d93F642f64180aa3`
-2. **Chemin de l'ABI** : `./artifacts/contracts/Reclamation.sol/ReclamationSystem.json`
-3. **URL Websocket** : `http://localhost:3000`
+## Dépannage
+
+| Problème | Solution |
+|----------|----------|
+| Terminal figé | `Ctrl + C`, puis relancer la commande |
+| Erreurs de compilation ou artefacts obsolètes | `npx hardhat clean` puis `npx hardhat compile` |
+| Erreur de modules ES (`require` / `import`) | `npm pkg set type="module"` |
+| Adresse du contrat invalide après redémarrage du nœud | Redéployer le contrat et mettre à jour `server.js` et `test-direct.cjs` |

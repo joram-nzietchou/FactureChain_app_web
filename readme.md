@@ -1,315 +1,298 @@
-# ⚡ LUMINA — Surveillance électrique & transparence énergétique
+<div align="center">
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-22-green)](https://nodejs.org/)
-[![Solidity](https://img.shields.io/badge/Solidity-0.8.20-black)](https://soliditylang.org/)
-[![Polygon](https://img.shields.io/badge/Polygon-AMOY-purple)](https://polygon.technology/)
+# ⚡ LUMINA
 
-> **LUMINA** est une application web qui permet aux abonnés ENEO du Cameroun de lutter contre les surfacturations et le vol d'électricité grâce à la blockchain Polygon.
+### Surveillance électrique & transparence énergétique
 
----
+Aidez les abonnés ENEO du Cameroun à contester les surfacturations et à détecter le vol d'électricité, grâce à une preuve infalsifiable sur la blockchain Polygon.
 
-## 📋 Table des matières
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636?logo=solidity&logoColor=white)](https://soliditylang.org/)
+[![Polygon](https://img.shields.io/badge/Polygon-Amoy-8247E5?logo=polygon&logoColor=white)](https://polygon.technology/)
 
-- [À propos](#-à-propos)
-- [Problématique](#-problématique)
-- [Solution](#-solution)
-- [Architecture](#-architecture)
-- [Stack technique](#-stack-technique)
-- [Installation](#-installation)
-- [Démarrage](#-démarrage)
-- [Structure du projet](#-structure-du-projet)
-- [Fonctionnalités](#-fonctionnalités)
-- [Documentation détaillée](#-documentation-détaillée)
-- [Contribution](#-contribution)
-- [Licence](#-licence)
-- [Contact](#-contact)
+</div>
 
 ---
 
-## 🎯 À propos
+## Sommaire
 
-**LUMINA** (du latin *lumen* = lumière) est une solution de **surveillance électrique intelligente** qui apporte transparence et justice dans la relation entre les abonnés ENEO et leur fournisseur d'électricité.
-
-Le projet combine :
-- 📊 **Surveillance de la consommation** (anti-surfacturation)
-- 🤖 **Détection de fraude** (anti-branchement illicite)
-- 🔗 **Preuve blockchain** (infalsifiable)
-- 📱 **Interface moderne** (accessible à tous)
+- [À propos](#à-propos)
+- [Problématique](#problématique)
+- [Solution](#solution)
+- [Architecture](#architecture)
+- [Stack technique](#stack-technique)
+- [Prise en main rapide](#prise-en-main-rapide)
+- [Structure du projet](#structure-du-projet)
+- [Fonctionnalités](#fonctionnalités)
+- [Feuille de route](#feuille-de-route)
+- [Documentation détaillée](#documentation-détaillée)
+- [Contribuer](#contribuer)
+- [Licence](#licence)
+- [Contact](#contact)
 
 ---
 
-## 🔍 Problématique
+## À propos
 
-### Problème n°1 : Surfacturations ENEO
+**LUMINA** (du latin *lumen*, « lumière ») est une application web de **surveillance électrique intelligente**. Elle apporte transparence et équité dans la relation entre les abonnés ENEO et leur fournisseur d'électricité.
+
+| Pilier | Description |
+|--------|-------------|
+| 📊 Surveillance de la consommation | Calcul de la facture selon les tarifs officiels, détection d'anomalies |
+| 🤖 Détection de fraude | Comparaison des courants entrant et sortant (capteurs IoT) |
+| 🔗 Preuve blockchain | Enregistrement immuable et horodaté sur Polygon |
+| 📱 Interface moderne | Responsive, pensée mobile-first, accessible à tous |
+
+---
+
+## Problématique
+
+### 1. Surfacturations
 
 | Indicateur | Valeur | Source |
 |------------|--------|--------|
 | Abonnés ENEO | 3 000 000+ | ARSEL 2024 |
-| Contestations de factures | 40% | ARSEL 2024 |
-| Appels de réclamation (2024) | 7 622 (+53%) | ARSEL 2024 |
+| Factures contestées | 40 % | ARSEL 2024 |
+| Appels de réclamation (2024) | 7 622 (+53 %) | ARSEL 2024 |
 | Délai de résolution | 2 à 18 mois | ARSEL 2024 |
 | Compteurs défaillants | 800 000 | ENEO |
 
-### Problème n°2 : Vol d'électricité
+### 2. Vol d'électricité
 
 | Indicateur | Valeur | Source |
 |------------|--------|--------|
 | Pertes annuelles | 60 milliards FCFA | ENEO |
-| Énergie détournée | 30% | ENEO |
-| Décès par électrocution (2024) | 32 morts | ENEO |
-| Taux de fraude (région Est) | 60% | ENEO |
+| Énergie détournée | 30 % | ENEO |
+| Décès par électrocution (2024) | 32 | ENEO |
+| Taux de fraude (région Est) | 60 % | ENEO |
 
 ---
 
-## 💡 Solution
+## Solution
 
-LUMINA agit sur **trois niveaux** :
+LUMINA agit à **trois niveaux** :
 
-### 1️⃣ Surveillance de la consommation
-- Saisie ou captation automatique de l'index
-- Calcul en temps réel selon les tarifs officiels ENEO
-- Détection automatique des anomalies
-
-### 2️⃣ Détection de fraude (IoT)
-- Capteurs ESP32 + ACS712 en amont et aval du compteur
-- Comparaison du courant entrant et sortant
-- Alerte immédiate en cas de disparité
-
-### 3️⃣ Preuve blockchain
-- Enregistrement immuable sur Polygon
-- Horodatage certifié
-- Vérification publique sur Polygonscan
+1. **Surveillance de la consommation**
+   - Saisie (ou captation automatique) de l'index du compteur
+   - Calcul en temps réel selon les tarifs officiels ENEO
+   - Détection automatique des écarts avec la facture reçue
+2. **Détection de fraude (IoT)**
+   - Capteurs ESP32 + ACS712 en amont et en aval du compteur
+   - Comparaison des courants mesurés
+   - Alerte immédiate en cas de disparité
+3. **Preuve blockchain**
+   - Enregistrement immuable des relevés et réclamations sur Polygon
+   - Horodatage certifié
+   - Vérification publique sur [Polygonscan](https://polygonscan.com/)
 
 ---
 
-## 🏗️ Architecture
-┌─────────────────────────────────────────────────────────────┐
-│ FRONTEND (React) │
-│ http://localhost:5173 │
-└─────────────────────────────────────────────────────────────┘
-│
-│ API REST
-▼
-┌─────────────────────────────────────────────────────────────┐
-│ BACKEND (Node.js) │
-│ http://localhost:3001 │
-└─────────────────────────────────────────────────────────────┘
-│ │
-▼ ▼
-┌──────────────────┐ ┌──────────────────────────────┐
-│ MONGODB │ │ BLOCKCHAIN POLYGON │
-│ Base de données│ │ (Testnet Amoy) │
-└──────────────────┘ └──────────────────────────────┘
-▲
-│
-┌──────────────────┐
-│ CAPTEURS IoT │
-│ ESP32 + ACS712 │
-└──────────────────┘
+## Architecture
 
-text
+```mermaid
+flowchart TD
+    A["Frontend React<br/>localhost:5173"] -->|API REST| B["Backend Node.js / Express<br/>localhost:3001"]
+    B --> C[("MongoDB")]
+    B -->|Ethers.js| D["Smart contract<br/>Polygon (Amoy)"]
+    E["Capteurs IoT<br/>ESP32 + ACS712"] -.->|"en développement"| B
+```
 
 ---
 
-## 🛠️ Stack technique
+## Stack technique
 
-### Frontend
-| Technologie | Version | Rôle |
-|-------------|---------|------|
-| React | 18.2 | Interface utilisateur |
-| Vite | 5.4 | Build tool |
-| Context API | - | Gestion d'état |
-
-### Backend
-| Technologie | Version | Rôle |
-|-------------|---------|------|
-| Node.js | 22.x | Runtime |
-| Express | 4.18 | Framework API |
-| MongoDB | 6.x | Base de données |
-| Mongoose | 8.0 | ODM MongoDB |
-| JWT | 9.0 | Authentification |
-| bcryptjs | 2.4 | Hachage |
-
-### Blockchain
-| Technologie | Version | Rôle |
-|-------------|---------|------|
-| Solidity | 0.8.20 | Smart contract |
-| Hardhat | 2.22 | Environnement dev |
-| Ethers.js | 6.13 | Interaction |
-| Polygon Amoy | - | Réseau testnet |
-
-### IoT (en développement)
-| Technologie | Rôle |
-|-------------|------|
-| ESP32 | Microcontrôleur |
-| ACS712 | Capteur de courant |
-| ZMPT101B | Capteur de tension |
+| Couche | Technologies |
+|--------|--------------|
+| **Frontend** | React 18.2, Vite 5.4, React Router 6, Context API |
+| **Backend** | Node.js 22, Express 4.18, MongoDB 6, Mongoose 8, JWT, bcryptjs |
+| **Blockchain** | Solidity 0.8.20, Hardhat 2.22, Ethers.js 6.13, Polygon Amoy |
+| **IoT** *(en développement)* | ESP32, ACS712 (courant), ZMPT101B (tension) |
 
 ---
 
-## 🚀 Installation
+## Prise en main rapide
 
 ### Prérequis
 
-- **Node.js** (v18 ou supérieur)
-- **MongoDB** (local ou Atlas)
-- **Git**
-- **MetaMask** (optionnel)
+- [Node.js](https://nodejs.org/) **v18 ou supérieur** (v22 recommandée)
+- [MongoDB](https://www.mongodb.com/) en local ou sur Atlas
+- [Git](https://git-scm.com/)
+- [MetaMask](https://metamask.io/) *(optionnel)*
 
-### Cloner le dépôt
+### Installation
 
 ```bash
 git clone https://github.com/joram-nzietchou/LUMINA.git
 cd LUMINA
-Installation des dépendances
-bash
-# Backend
-cd backend
-npm install
 
-# Frontend
-cd ../frontend
-npm install
+# Installer les dépendances de chaque module
+cd backend && npm install && cd ..
+cd frontend && npm install && cd ..
+cd blockchain && npm install && cd ..
+```
 
-# Blockchain
-cd ../blockchain
-npm install
-▶️ Démarrage
-1. Démarrer MongoDB
-bash
+Copiez ensuite les fichiers d'environnement (voir le README de chaque module) :
+
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+### Démarrage
+
+Ouvrez **quatre terminaux** et suivez cet ordre.
+
+**1. MongoDB**
+
+```bash
 # Windows
 net start MongoDB
 
-# macOS/Linux
+# macOS
 brew services start mongodb-community
-2. Démarrer la blockchain locale
-bash
+
+# Linux (systemd)
+sudo systemctl start mongod
+```
+
+**2. Blockchain locale** *(laisser ce terminal ouvert)*
+
+```bash
 cd blockchain
 npx hardhat node
-⚠️ Ce terminal doit rester ouvert
+```
 
-3. Déployer le contrat
-bash
-# Dans un nouveau terminal
+**3. Déploiement du contrat** *(nouveau terminal)*
+
+```bash
 cd blockchain
 npx hardhat run scripts/deploy.cjs --network localhost
-4. Démarrer le backend
-bash
+```
+
+Reportez l'adresse du contrat affichée dans la configuration du backend et du frontend.
+
+**4. Backend**
+
+```bash
 cd backend
 npm run dev
-Résultat attendu :
+```
 
-text
+Sortie attendue :
+
+```text
 ✅ MongoDB connecté: localhost
 ✅ Blockchain initialisée
 🚀 Serveur démarré sur http://localhost:3001
-5. Démarrer le frontend
-bash
+```
+
+**5. Frontend**
+
+```bash
 cd frontend
 npm run dev
-Accès : http://localhost:5173
+```
 
-📁 Structure du projet
-text
+Application disponible sur **http://localhost:5173**.
+
+---
+
+## Structure du projet
+
+```text
 LUMINA/
-│
-├── frontend/                    # Application React
-│   ├── src/
-│   │   ├── pages/              # Pages de l'application
-│   │   ├── components/         # Composants réutilisables
-│   │   ├── contexts/           # Contextes React
-│   │   ├── services/           # Services API
-│   │   └── App.jsx
-│   └── README.md
-│
-├── backend/                     # API Node.js
-│   ├── src/
-│   │   ├── models/             # Modèles MongoDB
-│   │   ├── controllers/        # Contrôleurs
-│   │   ├── routes/             # Routes API
-│   │   ├── services/           # Services métier
-│   │   ├── middleware/         # Middlewares
-│   │   └── app.js
-│   └── README.md
-│
-├── blockchain/                  # Smart contracts
-│   ├── contracts/
-│   │   └── Reclamation.sol
-│   ├── scripts/
-│   │   └── deploy.cjs
+├── frontend/                  # Application React (Vite)
+│   └── src/
+│       ├── components/        # Composants réutilisables
+│       ├── contexts/          # Contextes React
+│       ├── pages/             # Pages de l'application
+│       ├── services/          # Clients API
+│       └── App.jsx
+├── backend/                   # API REST Node.js
+│   └── src/
+│       ├── config/            # Base de données, blockchain
+│       ├── models/            # Modèles Mongoose
+│       ├── controllers/       # Contrôleurs
+│       ├── routes/            # Routes API
+│       ├── services/          # Logique métier
+│       ├── middleware/        # Auth, validation, erreurs
+│       └── app.js
+├── blockchain/                # Smart contracts (Hardhat)
+│   ├── contracts/             # Reclamation.sol
+│   ├── scripts/               # deploy.cjs
 │   └── hardhat.config.cjs
-│
 ├── .gitignore
 ├── LICENSE
 └── README.md
-✨ Fonctionnalités
-🔐 Authentification
-Inscription avec vérification ENEO
+```
 
-Connexion sécurisée (JWT)
+---
 
-Mot de passe oublié
+## Fonctionnalités
 
-Gestion du profil
+| Domaine | Détail |
+|---------|--------|
+| 🔐 **Authentification** | Inscription avec vérification ENEO, connexion JWT, mot de passe oublié, gestion du profil |
+| 📊 **Tableau de bord** | Indicateurs de consommation, historique des factures, statistiques par zone |
+| 📈 **Relevé de compteur** | Saisie des index, calcul automatique, aperçu de la facture |
+| 📝 **Réclamation** | Formulaire en 4 étapes, preuve blockchain, confirmation |
+| 📋 **Suivi** | Timeline des réclamations, statut en temps réel, historique complet |
+| 🔗 **Historique blockchain** | Relevés et réclamations, vérification sur Polygonscan |
 
-📊 Dashboard
-Indicateurs de consommation
+---
 
-Historique des factures
+## Feuille de route
 
-Statistiques par zone
+- [x] Authentification et gestion de profil
+- [x] Relevés de compteur et calcul de facture
+- [x] Réclamations avec preuve blockchain
+- [x] Déploiement sur testnet local (Hardhat)
+- [ ] Déploiement sur Polygon Amoy
+- [ ] Intégration des capteurs IoT (ESP32 + ACS712)
+- [ ] Détection d'anomalies automatisée
+- [ ] Tableau de bord administrateur / support
 
-📈 Relevé de compteur
-Saisie des index
+---
 
-Calcul automatique
+## Documentation détaillée
 
-Aperçu de la facture
+| Module | Documentation |
+|--------|---------------|
+| Frontend | [`frontend/README.md`](frontend/README.md) |
+| Backend | [`backend/README.md`](backend/README.md) |
+| Blockchain | [`blockchain/README.md`](blockchain/README.md) |
 
-📝 Réclamation
-Formulaire en 4 étapes
+---
 
-Preuve blockchain
+## Contribuer
 
-Confirmation et suivi
+Les contributions sont les bienvenues.
 
-📋 Suivi
-Timeline des réclamations
+1. Forkez le projet
+2. Créez une branche : `git checkout -b feature/ma-fonctionnalite`
+3. Committez vos changements : `git commit -m "feat: ajout de ma fonctionnalité"`
+4. Poussez la branche : `git push origin feature/ma-fonctionnalite`
+5. Ouvrez une Pull Request
 
-Statut en temps réel
+---
 
-Historique complet
+## Licence
 
-🔗 Historique blockchain
-Relevés et réclamations
+Distribué sous licence MIT. Voir le fichier [`LICENSE`](LICENSE).
 
-Vérification sur Polygonscan
+---
 
-📚 Documentation détaillée
-Documentation du backend
+## Contact
 
-Documentation du frontend
+**Joram Nzietchou**
+- GitHub : [@joram-nzietchou](https://github.com/joram-nzietchou)
+- Email : [joramnzietchou@gmail.com](mailto:joramnzietchou@gmail.com)
 
-🤝 Contribution
-Les contributions sont les bienvenues !
+<div align="center">
 
-Fork le projet
+**LUMINA — La transparence énergétique par la blockchain** ⚡
 
-Créez votre branche (git checkout -b feature/NouvelleFonctionnalite)
-
-Committez (git commit -m 'Ajout d'une nouvelle fonctionnalité')
-
-Poussez (git push origin feature/NouvelleFonctionnalite)
-
-Ouvrez une Pull Request
-
-📞 Contact
-Joram Nzietchou
-
-GitHub : @joram-nzietchou
-
-Email : joramnzietchou@gmail.com
-
-<p align="center"> <b>LUMINA — La transparence énergétique par la blockchain</b> ⚡ </p> ```
+</div>

@@ -170,26 +170,6 @@ Police principale **Inter**, avec repli sur `-apple-system`, `BlinkMacSystemFont
 
 ---
 
-## Déploiement
-
-### Vercel (recommandé)
-
-```bash
-npm install -g vercel
-vercel
-```
-
-### Netlify
-
-```bash
-npm run build
-netlify deploy --prod --dir=dist
-```
-
-Définissez `VITE_API_URL` et `VITE_CONTRACT_ADDRESS` dans les variables d'environnement de votre plateforme.
-
----
-
 ## Dépannage
 
 | Problème | Solution |

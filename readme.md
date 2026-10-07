@@ -115,13 +115,6 @@ flowchart TD
 
 ## Prise en main rapide
 
-### Prérequis
-
-- [Node.js](https://nodejs.org/) **v18 ou supérieur** (v22 recommandée)
-- [MongoDB](https://www.mongodb.com/) en local ou sur Atlas
-- [Git](https://git-scm.com/)
-- [MetaMask](https://metamask.io/) *(optionnel)*
-
 ### Installation
 
 ```bash

@@ -170,17 +170,6 @@ Police principale **Inter**, avec repli sur `-apple-system`, `BlinkMacSystemFont
 
 ---
 
-## Dépannage
-
-| Problème | Solution |
-|----------|----------|
-| Page blanche | Vérifier `VITE_API_URL` dans `.env` |
-| « Blockchain déconnectée » | Vérifier que le backend est démarré |
-| Erreur CORS | Vérifier la configuration CORS du backend |
-| Logo non affiché | Vérifier que `logo2.png` est dans `public/` |
-
----
-
 ## Support
 
 - Email : [joramnzietchou@gmail.com)

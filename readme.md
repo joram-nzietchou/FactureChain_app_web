@@ -1,50 +1,170 @@
-# ⚡ FactureChain - Vérification des factures ENEO sur Blockchain
-## 📋 À propos
+# ⚡ LUMINA — Surveillance électrique & transparence énergétique
 
-**FactureChain** est une application complète permettant aux abonnés ENEO du Cameroun de :
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22-green)](https://nodejs.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.20-black)](https://soliditylang.org/)
+[![Polygon](https://img.shields.io/badge/Polygon-AMOY-purple)](https://polygon.technology/)
 
-- 📊 **Enregistrer** leur index de compteur sur la blockchain Polygon
-- 🔍 **Vérifier** leurs factures et détecter automatiquement les anomalies
-- 📝 **Contester** les surfacturations avec une preuve infalsifiable
-- 🔗 **Bénéficier** d'une preuve légale enregistrée sur blockchain
-- 📈 **Suivre** l'évolution de leurs réclamations en temps réel
+> **LUMINA** est une application web qui permet aux abonnés ENEO du Cameroun de lutter contre les surfacturations et le vol d'électricité grâce à la blockchain Polygon.
 
-## 🎯 Problématique résolue
+---
 
-Au Cameroun, les abonnés ENEO subissent :
-- ❌ Délestages fréquents (8-12h/jour en saison sèche)
-- ❌ Factures contestées (40% des abonnés contestent au moins une facture par an)
-- ❌ 800 000 compteurs défaillants
-- ❌ Délais de résolution de 6 à 18 mois
+## 📋 Table des matières
 
-**FactureChain** apporte une solution transparente et décentralisée grâce à la blockchain.
+- [À propos](#-à-propos)
+- [Problématique](#-problématique)
+- [Solution](#-solution)
+- [Architecture](#-architecture)
+- [Stack technique](#-stack-technique)
+- [Installation](#-installation)
+- [Démarrage](#-démarrage)
+- [Structure du projet](#-structure-du-projet)
+- [Fonctionnalités](#-fonctionnalités)
+- [Documentation détaillée](#-documentation-détaillée)
+- [Contribution](#-contribution)
+- [Licence](#-licence)
+- [Contact](#-contact)
 
-## 🚀 Technologies utilisées
+---
 
-| Composant | Technologies |
-|-----------|--------------|
-| **Frontend** | React 18, Vite, CSS-in-JS, Axios |
-| **Backend** | Node.js, Express, MongoDB, JWT, Nodemailer |
-| **Blockchain** | Solidity, Hardhat, Ethers.js, Polygon (Amoy) |
-| **Authentification** | JWT, Bcrypt |
+## 🎯 À propos
 
-## 📦 Installation
+**LUMINA** (du latin *lumen* = lumière) est une solution de **surveillance électrique intelligente** qui apporte transparence et justice dans la relation entre les abonnés ENEO et leur fournisseur d'électricité.
+
+Le projet combine :
+- 📊 **Surveillance de la consommation** (anti-surfacturation)
+- 🤖 **Détection de fraude** (anti-branchement illicite)
+- 🔗 **Preuve blockchain** (infalsifiable)
+- 📱 **Interface moderne** (accessible à tous)
+
+---
+
+## 🔍 Problématique
+
+### Problème n°1 : Surfacturations ENEO
+
+| Indicateur | Valeur | Source |
+|------------|--------|--------|
+| Abonnés ENEO | 3 000 000+ | ARSEL 2024 |
+| Contestations de factures | 40% | ARSEL 2024 |
+| Appels de réclamation (2024) | 7 622 (+53%) | ARSEL 2024 |
+| Délai de résolution | 2 à 18 mois | ARSEL 2024 |
+| Compteurs défaillants | 800 000 | ENEO |
+
+### Problème n°2 : Vol d'électricité
+
+| Indicateur | Valeur | Source |
+|------------|--------|--------|
+| Pertes annuelles | 60 milliards FCFA | ENEO |
+| Énergie détournée | 30% | ENEO |
+| Décès par électrocution (2024) | 32 morts | ENEO |
+| Taux de fraude (région Est) | 60% | ENEO |
+
+---
+
+## 💡 Solution
+
+LUMINA agit sur **trois niveaux** :
+
+### 1️⃣ Surveillance de la consommation
+- Saisie ou captation automatique de l'index
+- Calcul en temps réel selon les tarifs officiels ENEO
+- Détection automatique des anomalies
+
+### 2️⃣ Détection de fraude (IoT)
+- Capteurs ESP32 + ACS712 en amont et aval du compteur
+- Comparaison du courant entrant et sortant
+- Alerte immédiate en cas de disparité
+
+### 3️⃣ Preuve blockchain
+- Enregistrement immuable sur Polygon
+- Horodatage certifié
+- Vérification publique sur Polygonscan
+
+---
+
+## 🏗️ Architecture
+┌─────────────────────────────────────────────────────────────┐
+│ FRONTEND (React) │
+│ http://localhost:5173 │
+└─────────────────────────────────────────────────────────────┘
+│
+│ API REST
+▼
+┌─────────────────────────────────────────────────────────────┐
+│ BACKEND (Node.js) │
+│ http://localhost:3001 │
+└─────────────────────────────────────────────────────────────┘
+│ │
+▼ ▼
+┌──────────────────┐ ┌──────────────────────────────┐
+│ MONGODB │ │ BLOCKCHAIN POLYGON │
+│ Base de données│ │ (Testnet Amoy) │
+└──────────────────┘ └──────────────────────────────┘
+▲
+│
+┌──────────────────┐
+│ CAPTEURS IoT │
+│ ESP32 + ACS712 │
+└──────────────────┘
+
+text
+
+---
+
+## 🛠️ Stack technique
+
+### Frontend
+| Technologie | Version | Rôle |
+|-------------|---------|------|
+| React | 18.2 | Interface utilisateur |
+| Vite | 5.4 | Build tool |
+| Context API | - | Gestion d'état |
+
+### Backend
+| Technologie | Version | Rôle |
+|-------------|---------|------|
+| Node.js | 22.x | Runtime |
+| Express | 4.18 | Framework API |
+| MongoDB | 6.x | Base de données |
+| Mongoose | 8.0 | ODM MongoDB |
+| JWT | 9.0 | Authentification |
+| bcryptjs | 2.4 | Hachage |
+
+### Blockchain
+| Technologie | Version | Rôle |
+|-------------|---------|------|
+| Solidity | 0.8.20 | Smart contract |
+| Hardhat | 2.22 | Environnement dev |
+| Ethers.js | 6.13 | Interaction |
+| Polygon Amoy | - | Réseau testnet |
+
+### IoT (en développement)
+| Technologie | Rôle |
+|-------------|------|
+| ESP32 | Microcontrôleur |
+| ACS712 | Capteur de courant |
+| ZMPT101B | Capteur de tension |
+
+---
+
+## 🚀 Installation
 
 ### Prérequis
 
-- Node.js (v18 ou supérieur)
-- MongoDB (local ou Atlas)
-- Git
+- **Node.js** (v18 ou supérieur)
+- **MongoDB** (local ou Atlas)
+- **Git**
+- **MetaMask** (optionnel)
 
-### 1. Cloner le dépôt
-
-```bash
-git clone https://github.com/joram-nzietchou/FactureChain_app_web.git
-cd FactureChain_app_web
-
-### 2. Installer les dépendances
+### Cloner le dépôt
 
 ```bash
+git clone https://github.com/joram-nzietchou/LUMINA.git
+cd LUMINA
+Installation des dépendances
+bash
 # Backend
 cd backend
 npm install
@@ -56,223 +176,140 @@ npm install
 # Blockchain
 cd ../blockchain
 npm install
-```
-
-### 3. Configuration des variables d'environnement
-
-**Backend** - Créer `backend/.env` :
-
-```env
-# Serveur
-PORT=3001
-NODE_ENV=development
-
-# Base de données
-MONGODB_URI=mongodb://localhost:27017/facturechain
-
-# JWT
-JWT_SECRET=votre_secret_key_pour_jwt
-JWT_EXPIRE=7d
-
-# Blockchain (pour développement local)
-BLOCKCHAIN_RPC_URL=http://127.0.0.1:8545
-CONTRACT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
-BLOCKCHAIN_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-```
-
-**Frontend** - Créer `frontend/.env` :
-
-```env
-VITE_API_URL=http://localhost:3001/api
-VITE_CONTRACT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
-```
-
-## 🚀 Démarrage
-
-### 1. Démarrer MongoDB
-
-```bash
-# Windows (si installé comme service)
+▶️ Démarrage
+1. Démarrer MongoDB
+bash
+# Windows
 net start MongoDB
 
-# ou
-mongod --dbpath C:\data\db
-```
-
-### 2. Démarrer la blockchain locale
-
-```bash
+# macOS/Linux
+brew services start mongodb-community
+2. Démarrer la blockchain locale
+bash
 cd blockchain
 npx hardhat node
-```
+⚠️ Ce terminal doit rester ouvert
 
-⚠️ **Ce terminal doit rester ouvert**
-
-### 3. Déployer le smart contract
-
-**Dans un nouveau terminal :**
-
-```bash
+3. Déployer le contrat
+bash
+# Dans un nouveau terminal
 cd blockchain
 npx hardhat run scripts/deploy.cjs --network localhost
-```
-
-**Notez l'adresse du contrat déployé** (ex: `0x5FbDB2315678afecb367f032d93F642f64180aa3`)
-
-### 4. Démarrer le backend
-
-```bash
+4. Démarrer le backend
+bash
 cd backend
 npm run dev
-```
+Résultat attendu :
 
-### 5. Démarrer le frontend
-
-```bash
+text
+✅ MongoDB connecté: localhost
+✅ Blockchain initialisée
+🚀 Serveur démarré sur http://localhost:3001
+5. Démarrer le frontend
+bash
 cd frontend
 npm run dev
-```
+Accès : http://localhost:5173
 
-### 6. Accéder à l'application
+📁 Structure du projet
+text
+LUMINA/
+│
+├── frontend/                    # Application React
+│   ├── src/
+│   │   ├── pages/              # Pages de l'application
+│   │   ├── components/         # Composants réutilisables
+│   │   ├── contexts/           # Contextes React
+│   │   ├── services/           # Services API
+│   │   └── App.jsx
+│   └── README.md
+│
+├── backend/                     # API Node.js
+│   ├── src/
+│   │   ├── models/             # Modèles MongoDB
+│   │   ├── controllers/        # Contrôleurs
+│   │   ├── routes/             # Routes API
+│   │   ├── services/           # Services métier
+│   │   ├── middleware/         # Middlewares
+│   │   └── app.js
+│   └── README.md
+│
+├── blockchain/                  # Smart contracts
+│   ├── contracts/
+│   │   └── Reclamation.sol
+│   ├── scripts/
+│   │   └── deploy.cjs
+│   └── hardhat.config.cjs
+│
+├── .gitignore
+├── LICENSE
+└── README.md
+✨ Fonctionnalités
+🔐 Authentification
+Inscription avec vérification ENEO
 
-- 🌐 **Frontend** : http://localhost:5173
-- 🔗 **API Backend** : http://localhost:3001/api
-- ⛓️ **Blockchain** : http://127.0.0.1:8545
+Connexion sécurisée (JWT)
 
-## 📱 Fonctionnalités
+Mot de passe oublié
 
-### 👤 Authentification
-- Inscription avec vérification du numéro ENEO
-- Connexion sécurisée (JWT)
-- Réinitialisation du mot de passe
-- Mode démo (anonyme)
+Gestion du profil
 
-### 📊 Dashboard
-- Vue d'ensemble de la consommation
-- Cartes KPI (consommation blockchain, montant ENEO, surfacturation)
-- Historique des consommations
-- Statistiques par zone géographique
+📊 Dashboard
+Indicateurs de consommation
 
-### 📝 Relevé de compteur
-- Enregistrement de l'index du compteur
-- Calcul automatique de la consommation
-- Génération de la facture selon les tarifs ENEO
-- Enregistrement sur la blockchain
+Historique des factures
 
-### 🔍 Réclamations
-- Formulaire en 4 étapes
-- Détection automatique des anomalies
-- Preuve blockchain infalsifiable
-- Soumission traçable
+Statistiques par zone
 
-### 📈 Suivi
-- Timeline détaillée du traitement
-- Statut en temps réel
-- Hash blockchain vérifiable
+📈 Relevé de compteur
+Saisie des index
 
-### 👤 Profil utilisateur
-- Gestion des informations personnelles
-- Statistiques des réclamations
-- Historique blockchain
+Calcul automatique
 
-## 🔗 Tarifs ENEO implémentés
+Aperçu de la facture
 
-| Tranche (kWh) | Prix (FCFA/kWh) |
-|---------------|-----------------|
-| 0 - 110 | 110 FCFA |
-| 111 - 220 | 115 FCFA |
-| 221 et plus | 120 FCFA |
+📝 Réclamation
+Formulaire en 4 étapes
 
-*TVA : 19.25% appliquée*
+Preuve blockchain
 
-## 📡 API Endpoints
+Confirmation et suivi
 
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| POST | `/api/auth/register` | Inscription |
-| POST | `/api/auth/login` | Connexion |
-| GET | `/api/auth/profile` | Profil utilisateur |
-| POST | `/api/claims` | Créer réclamation |
-| GET | `/api/claims` | Liste réclamations |
-| POST | `/api/meter/store` | Enregistrer relevé compteur |
-| GET | `/api/blockchain/history` | Historique blockchain |
+📋 Suivi
+Timeline des réclamations
 
-## 🧪 Tests
+Statut en temps réel
 
-```bash
-# Tests backend
-cd backend
-npm test
+Historique complet
 
-# Tests blockchain
-cd blockchain
-npx hardhat test
-```
+🔗 Historique blockchain
+Relevés et réclamations
 
-## 📦 Build de production
+Vérification sur Polygonscan
 
-```bash
-# Frontend
-cd frontend
-npm run build
+📚 Documentation détaillée
+Documentation du backend
 
-# Backend
-cd backend
-npm run build
-```
+Documentation du frontend
 
-## 🤝 Contribution
-
+🤝 Contribution
 Les contributions sont les bienvenues !
 
-1. Fork le projet
-2. Créez votre branche (`git checkout -b feature/AmazingFeature`)
-3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Poussez vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une Pull Request
+Fork le projet
 
-## 📄 Licence
+Créez votre branche (git checkout -b feature/NouvelleFonctionnalite)
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
+Committez (git commit -m 'Ajout d'une nouvelle fonctionnalité')
 
-## 👤 Auteur
+Poussez (git push origin feature/NouvelleFonctionnalite)
 
-**Joram Nzietchou**
-- GitHub : [@joram-nzietchou](https://github.com/joram-nzietchou)
-- Email : joram@facturechain.cm
+Ouvrez une Pull Request
 
-## 🙏 Remerciements
+📞 Contact
+Joram Nzietchou
 
-- ENEO Cameroun pour les données de référence
-- Polygon pour l'infrastructure blockchain
-- La communauté Open Source
+GitHub : @joram-nzietchou
 
-## 📞 Support
+Email : joramnzietchou@gmail.com
 
-Pour toute question ou suggestion :
-- 📧 Email : support@facturechain.cm
-- 📱 WhatsApp : +237 690 000 000
-- 🌐 Site web : https://facturechain.cm
-
----
-
-<p align="center">
-  <b>Développé avec ❤️ pour les abonnés ENEO du Cameroun</b>
-</p>
-```
-
-## 🚀 **Comment ajouter ce README à votre dépôt**
-
-```powershell
-# 1. Créer ou modifier le fichier README.md
-cd C:\Users\K TECH SOLUTION\Desktop\P\app_web
-
-# 2. Copier le contenu ci-dessus dans README.md
-
-# 3. Ajouter et pousser
-git add README.md
-git commit -m "docs: Ajout du README complet du projet"
-git push origin main
-```
-
-Votre dépôt aura maintenant un README **professionnel et complet** ! 🎉
+<p align="center"> <b>LUMINA — La transparence énergétique par la blockchain</b> ⚡ </p> ```
